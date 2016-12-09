@@ -27,20 +27,26 @@ Chjctp::Chjctp()
 	return;
 }
 
-TThostFtdcBrokerIDType	BROKER_ID = "";//"9999";						
-TThostFtdcInvestorIDType INVESTOR_ID = "";// "077580";						
-TThostFtdcPasswordType  PASSWORD = "";//hp120416";TThostFtdcBrokerIDType
+TThostFtdcBrokerIDType	BROKER_ID = "9999";//"9999";						
+TThostFtdcInvestorIDType INVESTOR_ID = "077580";// "077580";						
+TThostFtdcPasswordType  PASSWORD = "hp120416";//hp120416";TThostFtdcBrokerIDType
 
 int iRequestID;
+
+char *ppInstrumentID[] = {"rb1701"};							
+int iInstrumentID = 1;	
+
+JavaVM *jvm;
+jobject jjobj;
+CThostFtdcMdApi* pMdApi;
 
 JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_connect
   (JNIEnv *jenv, jclass, jstring pszFlowPath, jboolean bIsUsingUdp, jboolean bIsMulticast, jobject jobj, jstring front){
 	const char *c_pszFlowPath = jenv->GetStringUTFChars(pszFlowPath , NULL);
-	CThostFtdcMdApi* pMdApi = CThostFtdcMdApi::CreateFtdcMdApi(c_pszFlowPath, bIsUsingUdp, bIsMulticast);
-	jclass jcla = jenv->GetObjectClass(jobj);
-	jmethodID methodid = jenv->GetMethodID(jcla, "OnFrontConnected", "()V");
-	/*jenv->CallVoidMethod(jobj, methodid);*/
-	MdSpi mdSpi(pMdApi, jenv, jobj, methodid);
+	pMdApi = CThostFtdcMdApi::CreateFtdcMdApi(c_pszFlowPath, bIsUsingUdp, bIsMulticast);
+	jenv->GetJavaVM(&jvm);
+	jjobj = jenv->NewGlobalRef(jobj); 
+	MdSpi mdSpi(pMdApi);
 	pMdApi->RegisterSpi(&mdSpi);
 	char *c_front = (char*)jenv->GetStringUTFChars(front , NULL);
 	pMdApi->RegisterFront(c_front);
