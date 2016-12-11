@@ -17,4 +17,14 @@ public:
 	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
+private:
+	void reqUserLogin();
+
+	void subScribeMarketData();
+
+	void notifyFrontConnected();
+
+	void notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	void notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
 };
