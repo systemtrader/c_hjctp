@@ -54,7 +54,7 @@ void MdSpi::reqUserLogin(){
 
 void MdSpi::subScribeMarketData(){
 	int iResult = mdApi->SubscribeMarketData(ppInstrumentID, nCount);
-	cerr << "--->>> send market data: " << ((iResult == 0) ? "success" : "failed") << endl;
+	//cerr << "--->>> send market data: " << ((iResult == 0) ? "success" : "failed") << endl;
 }
 
 void MdSpi::notifyFrontConnected(){
@@ -108,6 +108,19 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 
 	const char* InstrumentID = pDepthMarketData->InstrumentID;
 	double LastPrice = pDepthMarketData->LastPrice;
+	double PreSettlementPrice = pDepthMarketData->PreSettlementPrice;
+	double PreClosePrice = pDepthMarketData->PreClosePrice;
+	double PreOpenInterest = pDepthMarketData->PreOpenInterest;
+	double OpenPrice = pDepthMarketData->OpenPrice;
+	double HighestPrice = pDepthMarketData->HighestPrice;
+	double LowestPrice = pDepthMarketData->LowestPrice;
+	int Volume = pDepthMarketData->Volume;
+	double Turnover = pDepthMarketData->Turnover;
+	double OpenInterest = pDepthMarketData->OpenInterest;
+	double ClosePrice = pDepthMarketData->ClosePrice;
+	double SettlementPrice = pDepthMarketData->SettlementPrice;
+	double UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
+	double LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
 
 	jobject instrumentId = env->NewStringUTF(InstrumentID);
 
@@ -116,6 +129,14 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 
 	jfieldID instrumentIdField = env->GetFieldID(cls, "instrumentId", "Ljava/lang/String;");
 	jfieldID lastPriceField = env->GetFieldID(cls,"lastPrice","D"); 
+	jfieldID preSettlementPriceField = env->GetFieldID(cls,"preSettlementPrice","D");
+	jfieldID preClosePriceField = env->GetFieldID(cls,"preClosePrice","D");
+	jfieldID preOpenInterestField = env->GetFieldID(cls,"preOpenInterest","D");
+	jfieldID openPriceField = env->GetFieldID(cls,"openPrice","D");
+	jfieldID highestPriceField = env->GetFieldID(cls,"highestPrice","D");
+	jfieldID lowestPriceField = env->GetFieldID(cls,"lowestPrice","D");
+	jfieldID lastPriceField = env->GetFieldID(cls,"lastPrice","D");
+	jfieldID lastPriceField = env->GetFieldID(cls,"lastPrice","D");
 	
 	env->SetObjectField(depthMarketDataObj, instrumentIdField, instrumentId);
 	env->SetDoubleField(depthMarketDataObj, lastPriceField, LastPrice);
