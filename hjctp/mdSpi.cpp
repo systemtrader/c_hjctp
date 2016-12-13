@@ -135,11 +135,29 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	jfieldID openPriceField = env->GetFieldID(cls,"openPrice","D");
 	jfieldID highestPriceField = env->GetFieldID(cls,"highestPrice","D");
 	jfieldID lowestPriceField = env->GetFieldID(cls,"lowestPrice","D");
-	jfieldID lastPriceField = env->GetFieldID(cls,"lastPrice","D");
-	jfieldID lastPriceField = env->GetFieldID(cls,"lastPrice","D");
+	jfieldID volumeField = env->GetFieldID(cls,"volume","I");
+	jfieldID turnoverField = env->GetFieldID(cls,"turnover","D");
+	jfieldID openInterestField = env->GetFieldID(cls,"openInterest","D");
+	jfieldID closePriceField = env->GetFieldID(cls,"closePrice","D");
+	jfieldID settlementPriceField = env->GetFieldID(cls,"settlementPrice","D");
+	jfieldID upperLimitPriceField = env->GetFieldID(cls,"upperLimitPrice","D");
+	jfieldID lowerLimitPriceField = env->GetFieldID(cls,"lowerLimitPrice","D");
 	
 	env->SetObjectField(depthMarketDataObj, instrumentIdField, instrumentId);
 	env->SetDoubleField(depthMarketDataObj, lastPriceField, LastPrice);
+	env->SetDoubleField(depthMarketDataObj, preSettlementPriceField, PreSettlementPrice);
+	env->SetDoubleField(depthMarketDataObj, preClosePriceField, PreClosePrice);
+	env->SetDoubleField(depthMarketDataObj, preOpenInterestField, PreOpenInterest);
+	env->SetDoubleField(depthMarketDataObj, openPriceField, OpenPrice);
+	env->SetDoubleField(depthMarketDataObj, highestPriceField, HighestPrice);
+	env->SetDoubleField(depthMarketDataObj, lowestPriceField, LowestPrice);
+	env->SetIntField(depthMarketDataObj, volumeField, Volume);
+	env->SetDoubleField(depthMarketDataObj, turnoverField, Turnover);
+	env->SetDoubleField(depthMarketDataObj, openInterestField, OpenInterest);
+	env->SetDoubleField(depthMarketDataObj, closePriceField, ClosePrice);
+	env->SetDoubleField(depthMarketDataObj, settlementPriceField, SettlementPrice);
+	env->SetDoubleField(depthMarketDataObj, upperLimitPriceField, UpperLimitPrice);
+	env->SetDoubleField(depthMarketDataObj, lowerLimitPriceField, LowerLimitPrice);
 	
 	jclass mdSpiCls = env->GetObjectClass(jspi);
 	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRtnDepthMarketData", "(Lorg/hjctp/entity/CThostFtdcDepthMarketDataField;)V");
