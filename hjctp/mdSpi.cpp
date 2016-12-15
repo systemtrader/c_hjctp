@@ -35,7 +35,7 @@ void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtd
 }
 
 void MdSpi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){
-	cerr << "--->>> " << "sub market data: " << pSpecificInstrument->InstrumentID << endl;
+	/*cerr << "--->>> " << "sub market data: " << pSpecificInstrument->InstrumentID << endl;*/
 }
 
 void MdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData){

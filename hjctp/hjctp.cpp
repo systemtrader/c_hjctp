@@ -86,3 +86,10 @@ JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_connect
 	pMdApi->Init();
 	pMdApi->Join();
 }
+
+JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_stop  
+	(JNIEnv *, jclass){
+	//cerr << ppInstrumentID << endl;
+	//pMdApi->UnSubscribeMarketData(ppInstrumentID, nCount);
+	pMdApi->Release();
+}
