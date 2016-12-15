@@ -63,5 +63,6 @@ $RECYCLE.BIN/
 *.lnk
 *.opensdf
 *.tlog
-.hjctp/x64/Debug/
-.x64/Debug/
+hjctp/x64/Debug/
+x64/
+ipch/
