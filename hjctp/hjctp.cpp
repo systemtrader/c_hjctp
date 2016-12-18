@@ -87,9 +87,18 @@ JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_connect
 	pMdApi->Join();
 }
 
+JNIEXPORT jstring JNICALL Java_org_hjctp_jni_NativeLoader_getTradingTay
+	(JNIEnv *env, jclass){
+	const char *TradingDay = pMdApi->GetTradingDay();
+	jstring tradingDay = env->NewStringUTF(TradingDay);
+	return tradingDay;
+}
+
 JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_stop  
 	(JNIEnv *, jclass){
 	//cerr << ppInstrumentID << endl;
 	//pMdApi->UnSubscribeMarketData(ppInstrumentID, nCount);
 	pMdApi->Release();
 }
+
+

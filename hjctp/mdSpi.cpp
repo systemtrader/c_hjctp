@@ -122,9 +122,11 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	double UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
 	double LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
 	const char* UpdateTime = pDepthMarketData->UpdateTime;
+	const char* TradingDay = pDepthMarketData->TradingDay;
 
 	jobject instrumentId = env->NewStringUTF(InstrumentID);
 	jobject updateTime = env->NewStringUTF(UpdateTime);
+	jobject tradingDay = env->NewStringUTF(TradingDay);
 
 	jclass cls = env->FindClass("org/hjctp/entity/CThostFtdcDepthMarketDataField");
 	jobject depthMarketDataObj =env->AllocObject(cls); 
@@ -145,6 +147,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	jfieldID upperLimitPriceField = env->GetFieldID(cls,"upperLimitPrice","D");
 	jfieldID lowerLimitPriceField = env->GetFieldID(cls,"lowerLimitPrice","D");
 	jfieldID updateTimeField = env->GetFieldID(cls, "updateTime", "Ljava/lang/String;");
+	jfieldID tradingDayField = env->GetFieldID(cls, "tradingDay", "Ljava/lang/String;");
 	
 	env->SetObjectField(depthMarketDataObj, instrumentIdField, instrumentId);
 	env->SetDoubleField(depthMarketDataObj, lastPriceField, LastPrice);
@@ -162,6 +165,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	env->SetDoubleField(depthMarketDataObj, upperLimitPriceField, UpperLimitPrice);
 	env->SetDoubleField(depthMarketDataObj, lowerLimitPriceField, LowerLimitPrice);
 	env->SetObjectField(depthMarketDataObj, updateTimeField, updateTime);
+	env->SetObjectField(depthMarketDataObj, tradingDayField, tradingDay);
 	
 	jclass mdSpiCls = env->GetObjectClass(jspi);
 	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRtnDepthMarketData", "(Lorg/hjctp/entity/CThostFtdcDepthMarketDataField;)V");
