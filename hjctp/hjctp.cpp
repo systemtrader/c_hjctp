@@ -5,7 +5,7 @@
 #include "hjctp.h"
 #include "jni.h"
 #include "jni_md.h"
-#include "org_hjctp_jni_NativeLoader.h"
+#include "org_zhps_hjctp_jni_NativeLoader.h"
 #include "ThostFtdcMdApi.h"
 #include "mdSpi.h"
 #include <iostream>
@@ -40,25 +40,25 @@ JavaVM *jvm;
 jobject jspi;
 CThostFtdcMdApi* pMdApi;
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_createMdApi
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_createMdApi
   (JNIEnv *jenv, jclass, jstring pszFlowPath, jboolean bIsUsingUdp, jboolean bIsMulticast){
 	const char *c_pszFlowPath = jenv->GetStringUTFChars(pszFlowPath , NULL);
 	pMdApi = CThostFtdcMdApi::CreateFtdcMdApi(c_pszFlowPath, bIsUsingUdp, bIsMulticast);
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerSpi
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerSpi
 	(JNIEnv *jenv, jclass, jobject jobj){
 	jenv->GetJavaVM(&jvm);
 	jspi = jenv->NewGlobalRef(jobj); 
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerFront
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerFront
   (JNIEnv *jenv, jclass, jstring front){
 	char *c_front = (char*)jenv->GetStringUTFChars(front , NULL);
 	pMdApi->RegisterFront(c_front);
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerLoginInfo
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerLoginInfo
   (JNIEnv *jenv, jclass, jstring brokerId, jstring investorId, jstring password){
 	const char *c_brokerId = jenv->GetStringUTFChars(brokerId , NULL);
 	const char *c_investorId = jenv->GetStringUTFChars(investorId , NULL);
@@ -68,7 +68,7 @@ JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerLoginInfo
 	strcpy(PASSWORD, c_brokerId);
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerSubMarketData
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerSubMarketData
 	(JNIEnv *jenv, jclass, jobjectArray contractsArray, jint subNum){	
 	jsize length = jenv->GetArrayLength(contractsArray);	
 	for(int i = 0; i < length; i++){
@@ -79,7 +79,7 @@ JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_registerSubMarketData
 	nCount = subNum;
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_connect
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connect
 	(JNIEnv *, jclass){
 	MdSpi mdSpi(pMdApi);
 	pMdApi->RegisterSpi(&mdSpi);
@@ -87,14 +87,14 @@ JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_connect
 	pMdApi->Join();
 }
 
-JNIEXPORT jstring JNICALL Java_org_hjctp_jni_NativeLoader_getTradingTay
+JNIEXPORT jstring JNICALL Java_org_zhps_hjctp_jni_NativeLoader_getTradingTay
 	(JNIEnv *env, jclass){
 	const char *TradingDay = pMdApi->GetTradingDay();
 	jstring tradingDay = env->NewStringUTF(TradingDay);
 	return tradingDay;
 }
 
-JNIEXPORT void JNICALL Java_org_hjctp_jni_NativeLoader_stop  
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_stop 
 	(JNIEnv *, jclass){
 	//cerr << ppInstrumentID << endl;
 	//pMdApi->UnSubscribeMarketData(ppInstrumentID, nCount);

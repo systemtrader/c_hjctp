@@ -2,7 +2,7 @@
 #include "mdSpi.h"
 #include <iostream>
 #include "ThostFtdcMdApi.h"
-#include "org_hjctp_jni_NativeLoader.h"
+#include "org_zhps_hjctp_jni_NativeLoader.h"
 #include "jni.h"
 using namespace std;
 
