@@ -82,7 +82,7 @@ void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThos
 
 	//cerr << "--->>> trading day " << jstrTmp << endl;
 
-	jclass rspUserLoginCls = env->FindClass("org/hjctp/entity/CThostFtdcRspUserLoginField");
+	jclass rspUserLoginCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspUserLoginField");
 	jobject rspUserLoginObj = env->AllocObject(rspUserLoginCls); 
 	jfieldID tradingDayField = env->GetFieldID(rspUserLoginCls,"tradingDay","Ljava/lang/String;"); 
 	jfieldID loginTimeField = env->GetFieldID(rspUserLoginCls, "loginTime", "Ljava/lang/String;");
@@ -94,11 +94,11 @@ void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThos
 	env->SetObjectField(rspUserLoginObj, userIdField, userId);
 	env->SetObjectField(rspUserLoginObj, shfeTimeField, shfeTime);
 
-	jclass rspInfoCls = env->FindClass("org/hjctp/entity/CThostFtdcRspInfoField");
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 
 	jclass mdSpiCls = env->GetObjectClass(jspi);
-	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRspUserLogin", "(Lorg/hjctp/entity/CThostFtdcRspUserLoginField;Lorg/hjctp/entity/CThostFtdcRspInfoField;IZ)V");
+	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRspUserLogin", "(Lorg/zhps/hjctp/entity/CThostFtdcRspUserLoginField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");
 	env->CallVoidMethod(jspi, methodid, rspUserLoginObj, rspInfoObj, nRequestID, bIsLast);
 }
 
@@ -128,7 +128,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	jobject updateTime = env->NewStringUTF(UpdateTime);
 	jobject tradingDay = env->NewStringUTF(TradingDay);
 
-	jclass cls = env->FindClass("org/hjctp/entity/CThostFtdcDepthMarketDataField");
+	jclass cls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcDepthMarketDataField");
 	jobject depthMarketDataObj =env->AllocObject(cls); 
 
 	jfieldID instrumentIdField = env->GetFieldID(cls, "instrumentId", "Ljava/lang/String;");
@@ -168,7 +168,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	env->SetObjectField(depthMarketDataObj, tradingDayField, tradingDay);
 	
 	jclass mdSpiCls = env->GetObjectClass(jspi);
-	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRtnDepthMarketData", "(Lorg/hjctp/entity/CThostFtdcDepthMarketDataField;)V");
+	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRtnDepthMarketData", "(Lorg/zhps/hjctp/entity/CThostFtdcDepthMarketDataField;)V");
 	env->CallVoidMethod(jspi, methodid, depthMarketDataObj);
 
 	jvm->DetachCurrentThread();
