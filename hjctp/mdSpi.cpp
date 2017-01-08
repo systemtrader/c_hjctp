@@ -16,7 +16,7 @@ extern int iRequestID;
 extern char* ppInstrumentID[];	
 extern int nCount;
 
-extern jobject jspi;
+//extern jobject jMdSpi;
 
 void MdSpi::OnFrontConnected(){
 	//cerr << "--->>> " << "connecting..." << endl;
@@ -59,16 +59,16 @@ void MdSpi::subScribeMarketData(){
 
 void MdSpi::notifyFrontConnected(){
 	JNIEnv *env; 
-	jvm->AttachCurrentThread((void **)&env, NULL);
-	jclass cls = env->GetObjectClass(jspi); 
+	mdJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass cls = env->GetObjectClass(jMdSpi); 
 	jmethodID methodid = env->GetMethodID(cls, "onFrontConnected", "()V");
-	env->CallVoidMethod(jspi, methodid);
-	jvm->DetachCurrentThread();
+	env->CallVoidMethod(jMdSpi, methodid);
+	mdJvm->DetachCurrentThread();
 }
 
 void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){
 	JNIEnv *env; 
-	jvm->AttachCurrentThread((void **)&env, NULL);
+	mdJvm->AttachCurrentThread((void **)&env, NULL);
 
 	const char* TradingDay = pRspUserLogin->TradingDay;
 	const char* LoginTime = pRspUserLogin->LoginTime;
@@ -97,14 +97,16 @@ void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThos
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 
-	jclass mdSpiCls = env->GetObjectClass(jspi);
+	jclass mdSpiCls = env->GetObjectClass(jMdSpi);
 	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRspUserLogin", "(Lorg/zhps/hjctp/entity/CThostFtdcRspUserLoginField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");
-	env->CallVoidMethod(jspi, methodid, rspUserLoginObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jMdSpi, methodid, rspUserLoginObj, rspInfoObj, nRequestID, bIsLast);
+
+	mdJvm->DetachCurrentThread();
 }
 
 void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData){
 	JNIEnv *env; 
-	jvm->AttachCurrentThread((void **)&env, NULL);
+	mdJvm->AttachCurrentThread((void **)&env, NULL);
 
 	const char* InstrumentID = pDepthMarketData->InstrumentID;
 	double LastPrice = pDepthMarketData->LastPrice;
@@ -167,9 +169,9 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	env->SetObjectField(depthMarketDataObj, updateTimeField, updateTime);
 	env->SetObjectField(depthMarketDataObj, tradingDayField, tradingDay);
 	
-	jclass mdSpiCls = env->GetObjectClass(jspi);
+	jclass mdSpiCls = env->GetObjectClass(jMdSpi);
 	jmethodID methodid = env->GetMethodID(mdSpiCls, "onRtnDepthMarketData", "(Lorg/zhps/hjctp/entity/CThostFtdcDepthMarketDataField;)V");
-	env->CallVoidMethod(jspi, methodid, depthMarketDataObj);
+	env->CallVoidMethod(jMdSpi, methodid, depthMarketDataObj);
 
-	jvm->DetachCurrentThread();
+	mdJvm->DetachCurrentThread();
 }

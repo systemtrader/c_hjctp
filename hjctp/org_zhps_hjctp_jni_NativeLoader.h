@@ -7,6 +7,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/////////////////////////////////////////////////////////MARKET///////////////////////////////////////////////////////////////////
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
  * Method:    createMdApi
@@ -17,26 +18,26 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_createMdApi
 
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
- * Method:    registerSpi
+ * Method:    registerMdSpi
  * Signature: (Lorg/zhps/hjctp/spi/MdSpi;)V
  */
-JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerSpi
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerMdSpi
   (JNIEnv *, jclass, jobject);
 
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
- * Method:    registerFront
+ * Method:    registerMdFront
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerFront
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerMdFront
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
- * Method:    registerLoginInfo
+ * Method:    registerMdLoginInfo
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerLoginInfo
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerMdLoginInfo
   (JNIEnv *, jclass, jstring, jstring, jstring);
 
 /*
@@ -49,10 +50,10 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerSubMarketDat
 
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
- * Method:    connect
+ * Method:    connectMdServer
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connect
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connectMdServer
   (JNIEnv *, jclass);
 
 /*
@@ -71,10 +72,54 @@ JNIEXPORT jstring JNICALL Java_org_zhps_hjctp_jni_NativeLoader_getTradingTay
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_stop
   (JNIEnv *, jclass);
 
+/////////////////////////////////////////////////////////TRADER///////////////////////////////////////////////////////////////////
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    createTraderApi
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_createTraderApi
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    registerTraderSpi
+ * Signature: (Lorg/zhps/hjctp/spi/TraderSpi;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerTraderSpi
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    registerTraderFront
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerTraderFront
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    registerTraderLoginInfo
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerTraderLoginInfo
+  (JNIEnv *, jclass, jstring, jstring, jstring);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    connectTraderServer
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connectTraderServer
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif
 #endif
-
-extern JavaVM *jvm;
-extern jobject jspi;
+//market
+extern JavaVM *mdJvm;
+extern jobject jMdSpi;
+//trader
+extern JavaVM *traderJvm;
+extern jobject jTraderSpi;
