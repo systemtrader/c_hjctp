@@ -12,7 +12,7 @@ extern TThostFtdcPasswordType  PASSWORD;
 
 int i = 0;
 
-extern int iRequestID;
+int iMdRequestID;
 extern char* ppInstrumentID[];	
 extern int nCount;
 
@@ -48,7 +48,7 @@ void MdSpi::reqUserLogin(){
 	strcpy(req.BrokerID, BROKER_ID);
 	strcpy(req.UserID, INVESTOR_ID);
 	strcpy(req.Password, PASSWORD);
-	int iResult = mdApi->ReqUserLogin(&req, ++iRequestID);
+	int iResult = mdApi->ReqUserLogin(&req, ++iMdRequestID);
 	//cerr << "--->>> send login: " << ((iResult == 0) ? "success" : "fail") << " iResult = " << iResult << endl;
 }
 

@@ -33,8 +33,6 @@ TThostFtdcBrokerIDType	BROKER_ID;
 TThostFtdcInvestorIDType INVESTOR_ID;					
 TThostFtdcPasswordType  PASSWORD;
 
-int iRequestID;
-
 char *ppInstrumentID[40];// = {"rb1701"};							
 int nCount;	
 
@@ -71,8 +69,8 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerMdLoginInfo
 	const char *c_investorId = jenv->GetStringUTFChars(investorId , NULL);
 	const char *c_password = jenv->GetStringUTFChars(password , NULL);
 	strcpy(BROKER_ID, c_brokerId);
-	strcpy(INVESTOR_ID, c_brokerId);
-	strcpy(PASSWORD, c_brokerId);
+	strcpy(INVESTOR_ID, c_investorId);
+	strcpy(PASSWORD, c_password);
 }
 
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerSubMarketData
@@ -135,8 +133,8 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerTraderLoginI
 	const char *c_investorId = jenv->GetStringUTFChars(investorId , NULL);
 	const char *c_password = jenv->GetStringUTFChars(password , NULL);
 	strcpy(BROKER_ID, c_brokerId);
-	strcpy(INVESTOR_ID, c_brokerId);
-	strcpy(PASSWORD, c_brokerId);
+	strcpy(INVESTOR_ID, c_investorId);
+	strcpy(PASSWORD, c_password);
 }
 
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connectTraderServer

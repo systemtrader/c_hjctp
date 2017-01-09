@@ -10,9 +10,7 @@ extern TThostFtdcBrokerIDType BROKER_ID;
 extern TThostFtdcInvestorIDType INVESTOR_ID;						
 extern TThostFtdcPasswordType  PASSWORD;
 
-extern int iRequestID;
-extern char* ppInstrumentID[];	
-extern int nCount;
+int iTdRequestID;
 
 extern jobject jTraderSpi;
 
@@ -31,6 +29,7 @@ void TraderSpi::notifyFrontConnected(){
 }
 
 void TraderSpi::OnFrontDisconnected(int nReason){
+	cerr << "disconted" << nReason << endl;
 }
 
 void TraderSpi::reqUserLogin(){
@@ -39,10 +38,16 @@ void TraderSpi::reqUserLogin(){
 	strcpy(req.BrokerID, BROKER_ID);
 	strcpy(req.UserID, INVESTOR_ID);
 	strcpy(req.Password, PASSWORD);
-	int iResult = traderApi->ReqUserLogin(&req, ++iRequestID);
+	int iResult = traderApi->ReqUserLogin(&req, ++iTdRequestID);
+	//cerr << "login result: " << iResult << endl;
 }
 
 void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){	
+	/*cerr << "login info " << pRspInfo->ErrorID << endl;
+	cerr << "tradding day " << pRspUserLogin->TradingDay << endl;
+	cerr << "login FrontID " << pRspUserLogin->FrontID << endl;
+	cerr << "login SessionID " << pRspUserLogin->SessionID << endl;
+	cerr << "login MaxOrderRef " << pRspUserLogin->MaxOrderRef << endl;*/
 	notifyRspUserLogin(pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 }
 
@@ -54,11 +59,15 @@ void TraderSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, C
 	const char* LoginTime = pRspUserLogin->LoginTime;
 	const char* UserID = pRspUserLogin->UserID;
 	const char* SHFETime = pRspUserLogin->SHFETime;
+	const char* ErrorMsg = pRspInfo->ErrorMsg;
 
 	jobject tradingDay = env->NewStringUTF(TradingDay);
 	jobject loginTime = env->NewStringUTF(LoginTime);
 	jobject userId = env->NewStringUTF(UserID);
 	jobject shfeTime = env->NewStringUTF(SHFETime);
+	jobject errorMsg = env->NewStringUTF(ErrorMsg);
+
+	//cerr << "trading day: " << TradingDay << endl;
 
 	//cerr << "--->>> trading day " << jstrTmp << endl;
 
@@ -76,6 +85,9 @@ void TraderSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, C
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	jfieldID errorMsgField = env->GetFieldID(rspInfoCls,"errorMsg","Ljava/lang/String;"); 
+
+	env->SetObjectField(rspInfoObj, errorMsgField, errorMsg);
 
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
 	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRspUserLogin", "(Lorg/zhps/hjctp/entity/CThostFtdcRspUserLoginField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");
