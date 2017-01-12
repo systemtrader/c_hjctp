@@ -37,7 +37,7 @@ private:
 	virtual void notifyFrontConnected();
 	virtual void notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void notifyRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void queryTradingAccount();
+	//virtual int queryTradingAccount();
 	/*virtual void queryInvestorPosition();
 	virtual void queryInvestorPositionDetail();
 	virtual void queryOrder();

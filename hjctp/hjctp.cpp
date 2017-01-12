@@ -11,6 +11,7 @@
 #include "mdSpi.h"
 #include "traderSpi.h"
 #include <iostream>
+#include "common.h"
 using namespace std;
 
 // This is an example of an exported variable
@@ -39,10 +40,12 @@ int nCount;
 JavaVM *mdJvm;
 jobject jMdSpi;
 CThostFtdcMdApi* pMdApi;
+int iMdRequestID = 1;
 
 JavaVM *traderJvm;
 jobject jTraderSpi;
 CThostFtdcTraderApi *pTraderApi;
+int iTdRequestID = 1;
 
 /////////////////////////////////////////////////////////MARKET///////////////////////////////////////////////////////////////////
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_createMdApi
@@ -145,4 +148,11 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connectTraderServer
 	pTraderApi->Join();
 }
 
-
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryTradingAccount
+	(JNIEnv *, jclass){
+	CThostFtdcQryTradingAccountField tradingAccount;
+	memset(&tradingAccount, 0, sizeof(tradingAccount));
+	strcpy(tradingAccount.BrokerID, BROKER_ID);
+	strcpy(tradingAccount.InvestorID, INVESTOR_ID);
+	return pTraderApi->ReqQryTradingAccount(&tradingAccount, ++iTdRequestID);
+}

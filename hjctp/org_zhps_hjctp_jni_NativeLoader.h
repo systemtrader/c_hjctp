@@ -7,7 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/////////////////////////////////////////////////////////MARKET///////////////////////////////////////////////////////////////////
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
  * Method:    createMdApi
@@ -72,7 +71,6 @@ JNIEXPORT jstring JNICALL Java_org_zhps_hjctp_jni_NativeLoader_getTradingTay
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_stop
   (JNIEnv *, jclass);
 
-/////////////////////////////////////////////////////////TRADER///////////////////////////////////////////////////////////////////
 /*
  * Class:     org_zhps_hjctp_jni_NativeLoader
  * Method:    createTraderApi
@@ -113,13 +111,55 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_registerTraderLoginI
 JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_connectTraderServer
   (JNIEnv *, jclass);
 
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    insertOrder
+ * Signature: (Lorg/zhps/hjctp/entity/Iorder;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_insertOrder
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    killOrder
+ * Signature: (Lorg/zhps/hjctp/entity/Korder;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_killOrder
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    queryOrder
+ * Signature: (Lorg/zhps/hjctp/entity/Qorder;)V
+ */
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryOrder
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    queryTradingAccount
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryTradingAccount
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    queryInvestorPosition
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryInvestorPosition
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_zhps_hjctp_jni_NativeLoader
+ * Method:    queryInvestorPositionDetail
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryInvestorPositionDetail
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif
 #endif
-//market
-extern JavaVM *mdJvm;
-extern jobject jMdSpi;
-//trader
-extern JavaVM *traderJvm;
-extern jobject jTraderSpi;
