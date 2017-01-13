@@ -156,3 +156,21 @@ JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryTradingAccount
 	strcpy(tradingAccount.InvestorID, INVESTOR_ID);
 	return pTraderApi->ReqQryTradingAccount(&tradingAccount, ++iTdRequestID);
 }
+
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryInvestorPosition
+	(JNIEnv *, jclass){
+	CThostFtdcQryInvestorPositionField req;
+	memset(&req, 0, sizeof(req));
+	strcpy(req.BrokerID, BROKER_ID);
+	strcpy(req.InvestorID, INVESTOR_ID);
+	return pTraderApi->ReqQryInvestorPosition(&req, ++iTdRequestID);
+}
+
+JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryInvestorPositionDetail
+	(JNIEnv *, jclass){
+	CThostFtdcQryInvestorPositionDetailField req;
+	memset(&req, 0, sizeof(req));
+	strcpy(req.BrokerID, BROKER_ID);
+	strcpy(req.InvestorID, INVESTOR_ID);
+	return pTraderApi->ReqQryInvestorPositionDetail(&req, ++iTdRequestID);
+}
