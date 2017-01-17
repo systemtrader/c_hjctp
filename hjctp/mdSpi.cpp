@@ -18,7 +18,7 @@ extern int nCount;
 
 void MdSpi::OnFrontConnected(){
 	notifyFrontConnected();
-	//reqUserLogin();
+	reqUserLogin();
 }
 
 void MdSpi::notifyFrontConnected(){
