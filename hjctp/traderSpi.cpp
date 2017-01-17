@@ -59,10 +59,10 @@ void TraderSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, C
 	jclass rspUserLoginCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspUserLoginField");
 	jobject rspUserLoginObj = env->AllocObject(rspUserLoginCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "tradingDay", 0, env->NewStringUTF(pRspUserLogin->TradingDay),0, 0);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "loginTime", 0, env->NewStringUTF(pRspUserLogin->LoginTime),0, 0);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "userId", 0, env->NewStringUTF(pRspUserLogin->UserID),0, 0);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "shfeTime", 0, env->NewStringUTF(pRspUserLogin->SHFETime),0, 0);
+	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "tradingDay", 0, pRspUserLogin->TradingDay);
+	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "loginTime", 0, pRspUserLogin->LoginTime);
+	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "userId", 0, pRspUserLogin->UserID);
+	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "shfeTime", 0, pRspUserLogin->SHFETime);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
@@ -96,18 +96,18 @@ void TraderSpi::notifyRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFi
 		return;	
 	}
 
-	jclass rspSettlementInfoConfirmCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcSettlementInfoConfirmField");
-	jobject rspSettlementInfoConfirmObj = env->AllocObject(rspSettlementInfoConfirmCls); 
+	jclass settlementInfoConfirmCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcSettlementInfoConfirmField");
+	jobject settlementInfoConfirmObj = env->AllocObject(settlementInfoConfirmCls); 
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspSettlementInfoConfirmCls, &rspSettlementInfoConfirmObj, "brokerID", 0, env->NewStringUTF(pSettlementInfoConfirm->BrokerID),0, 0);
-	Common::loadClass(env, &rspSettlementInfoConfirmCls, &rspSettlementInfoConfirmObj, "investorID", 0, env->NewStringUTF(pSettlementInfoConfirm->InvestorID),0, 0);
-	Common::loadClass(env, &rspSettlementInfoConfirmCls, &rspSettlementInfoConfirmObj, "confirmDate", 0, env->NewStringUTF(pSettlementInfoConfirm->ConfirmDate),0, 0);
-	Common::loadClass(env, &rspSettlementInfoConfirmCls, &rspSettlementInfoConfirmObj, "confirmTime", 0, env->NewStringUTF(pSettlementInfoConfirm->ConfirmTime),0, 0);
+	Common::loadClass(env, &settlementInfoConfirmCls, &settlementInfoConfirmObj, "brokerID", 0, pSettlementInfoConfirm->BrokerID);
+	Common::loadClass(env, &settlementInfoConfirmCls, &settlementInfoConfirmObj, "investorID", 0, pSettlementInfoConfirm->InvestorID);
+	Common::loadClass(env, &settlementInfoConfirmCls, &settlementInfoConfirmObj, "confirmDate", 0, pSettlementInfoConfirm->ConfirmDate);
+	Common::loadClass(env, &settlementInfoConfirmCls, &settlementInfoConfirmObj, "confirmTime", 0, pSettlementInfoConfirm->ConfirmTime);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 	
-	env->CallVoidMethod(jTraderSpi, methodid, rspSettlementInfoConfirmObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jTraderSpi, methodid, settlementInfoConfirmObj, rspInfoObj, nRequestID, bIsLast);
 
 	traderJvm->DetachCurrentThread();
 }
@@ -132,38 +132,38 @@ void TraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAc
 		return;
 	}
 	
-	jclass rspQryTradingAccountCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcTradingAccountField");
-	jobject rspQryTradingAccountObj = env->AllocObject(rspQryTradingAccountCls);
+	jclass tradingAccountCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcTradingAccountField");
+	jobject tradingAccountObj = env->AllocObject(tradingAccountCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "brokerID", 0, env->NewStringUTF(pTradingAccount->BrokerID), 0, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "accountID", 0, env->NewStringUTF(pTradingAccount->AccountID), 0, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "preCredit", 1, NULL, pTradingAccount->PreCredit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "preDeposit", 1, NULL, pTradingAccount->PreDeposit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "preBalance", 1, NULL, pTradingAccount->PreBalance, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "preMargin", 1, NULL, pTradingAccount->PreMargin, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "deposit", 1, NULL, pTradingAccount->Deposit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "withdraw", 1, NULL, pTradingAccount->Withdraw, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "frozenMargin", 1, NULL, pTradingAccount->FrozenMargin, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "frozenCash", 1, NULL, pTradingAccount->FrozenCash, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "frozenCommission", 1, NULL, pTradingAccount->FrozenCommission, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "currMargin", 1, NULL, pTradingAccount->CurrMargin, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "cashIn", 1, NULL, pTradingAccount->CashIn, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "commission", 1, NULL, pTradingAccount->Commission, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "closeProfit", 1, NULL, pTradingAccount->CloseProfit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "positionProfit", 1, NULL, pTradingAccount->PositionProfit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "balance", 1, NULL, pTradingAccount->Balance, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "available", 1, NULL, pTradingAccount->Available, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "withdrawQuota", 1, NULL, pTradingAccount->WithdrawQuota, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "reserve", 1, NULL, pTradingAccount->Reserve, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "tradingDay", 0, env->NewStringUTF(pTradingAccount->TradingDay), 0, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "settlementID", 2, NULL, 0, pTradingAccount->SettlementID);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "credit", 1, NULL, pTradingAccount->Credit, 0);
-	Common::loadClass(env, &rspQryTradingAccountCls, &rspQryTradingAccountObj, "exchangeMargin", 1, NULL, pTradingAccount->ExchangeMargin, 0);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "brokerID", 0, pTradingAccount->BrokerID);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "accountID", 0, pTradingAccount->AccountID);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "preCredit", 1, pTradingAccount->PreCredit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "preDeposit", 1, pTradingAccount->PreDeposit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "preBalance", 1, pTradingAccount->PreBalance);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "preMargin", 1, pTradingAccount->PreMargin);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "deposit", 1, pTradingAccount->Deposit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "withdraw", 1, pTradingAccount->Withdraw);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "frozenMargin", 1, pTradingAccount->FrozenMargin);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "frozenCash", 1, pTradingAccount->FrozenCash);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "frozenCommission", 1, pTradingAccount->FrozenCommission);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "currMargin", 1, pTradingAccount->CurrMargin);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "cashIn", 1, pTradingAccount->CashIn);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "commission", 1, pTradingAccount->Commission);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "closeProfit", 1, pTradingAccount->CloseProfit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "positionProfit", 1, pTradingAccount->PositionProfit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "balance", 1, pTradingAccount->Balance);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "available", 1, pTradingAccount->Available);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "withdrawQuota", 1, pTradingAccount->WithdrawQuota);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "reserve", 1, pTradingAccount->Reserve);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "tradingDay", 0, pTradingAccount->TradingDay);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "settlementID", 2, pTradingAccount->SettlementID);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "credit", 1, pTradingAccount->Credit);
+	Common::loadClass(env, &tradingAccountCls, &tradingAccountObj, "exchangeMargin", 1, pTradingAccount->ExchangeMargin);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 	
-	env->CallVoidMethod(jTraderSpi, methodid, rspQryTradingAccountObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jTraderSpi, methodid, tradingAccountObj, rspInfoObj, nRequestID, bIsLast);
 
 	traderJvm->DetachCurrentThread();
 }
@@ -180,48 +180,48 @@ void TraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInves
 		return;
 	}
 
-	jclass rspQryInvestorPositionCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInvestorPositionField");
-	jobject rspQryInvestorPositionObj = env->AllocObject(rspQryInvestorPositionCls);
+	jclass investorPositionCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInvestorPositionField");
+	jobject investorPositionObj = env->AllocObject(investorPositionCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "instrumentID", 0, env->NewStringUTF(pInvestorPosition->InstrumentID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "brokerID", 0, env->NewStringUTF(pInvestorPosition->BrokerID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "investorID", 0, env->NewStringUTF(pInvestorPosition->InvestorID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "posiDirection", 0, env->NewStringUTF(&pInvestorPosition->PosiDirection), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "hedgeFlag", 0, env->NewStringUTF(&pInvestorPosition->HedgeFlag), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "positionDate", 0, env->NewStringUTF(&pInvestorPosition->PositionDate), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "ydPosition", 2, NULL, 0, pInvestorPosition->YdPosition);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "position", 2, NULL, 0, pInvestorPosition->Position);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "longFrozen", 2, NULL, 0, pInvestorPosition->LongFrozen);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "shortFrozen", 2, NULL, 0, pInvestorPosition->ShortFrozen);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "longFrozenAmount", 1, NULL, pInvestorPosition->LongFrozenAmount, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "shortFrozenAmount", 1, NULL, pInvestorPosition->ShortFrozenAmount, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "openVolume", 2, NULL, 0, pInvestorPosition->OpenVolume);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "closeVolume", 2, NULL, 0, pInvestorPosition->CloseVolume);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "openAmount", 1, NULL, pInvestorPosition->OpenAmount, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "closeAmount", 1, NULL, pInvestorPosition->CloseAmount, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "positionCost", 1, NULL, pInvestorPosition->PositionCost, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "preMargin", 1, NULL, pInvestorPosition->PreMargin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "useMargin", 1, NULL, pInvestorPosition->UseMargin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "frozenMargin", 1, NULL, pInvestorPosition->FrozenMargin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "frozenCash", 1, NULL, pInvestorPosition->FrozenCash, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "frozenCommission", 1, NULL, pInvestorPosition->FrozenCommission, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "commission", 1, NULL, pInvestorPosition->Commission, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "closeProfit", 1, NULL, pInvestorPosition->CloseProfit, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "positionProfit", 1, NULL, pInvestorPosition->PositionProfit, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "preSettlementPrice", 1, NULL, pInvestorPosition->PreSettlementPrice, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "settlementPrice", 1, NULL, pInvestorPosition->SettlementPrice, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "tradingDay", 0, env->NewStringUTF(pInvestorPosition->TradingDay), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "settlementID", 2, NULL, 0, pInvestorPosition->SettlementID);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "openCost", 1, NULL, pInvestorPosition->OpenCost, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "exchangeMargin", 1, NULL, pInvestorPosition->ExchangeMargin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "closeProfitByDate", 1, NULL, pInvestorPosition->CloseProfitByDate, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "closeProfitByTrade", 1, NULL, pInvestorPosition->CloseProfitByTrade, 0);
-	Common::loadClass(env, &rspQryInvestorPositionCls, &rspQryInvestorPositionObj, "todayPosition", 2, NULL, 0, pInvestorPosition->TodayPosition);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "instrumentID", 0, pInvestorPosition->InstrumentID);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "brokerID", 0, pInvestorPosition->BrokerID);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "investorID", 0, pInvestorPosition->InvestorID);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "posiDirection", 0, pInvestorPosition->PosiDirection);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "hedgeFlag", 0, pInvestorPosition->HedgeFlag);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "positionDate", 0, pInvestorPosition->PositionDate);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "ydPosition", 2, pInvestorPosition->YdPosition);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "position", 2, pInvestorPosition->Position);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "longFrozen", 2, pInvestorPosition->LongFrozen);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "shortFrozen", 2, pInvestorPosition->ShortFrozen);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "longFrozenAmount", 1, pInvestorPosition->LongFrozenAmount);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "shortFrozenAmount", 1, pInvestorPosition->ShortFrozenAmount);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "openVolume", 2, pInvestorPosition->OpenVolume);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "closeVolume", 2, pInvestorPosition->CloseVolume);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "openAmount", 1, pInvestorPosition->OpenAmount);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "closeAmount", 1, pInvestorPosition->CloseAmount);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "positionCost", 1, pInvestorPosition->PositionCost);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "preMargin", 1, pInvestorPosition->PreMargin);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "useMargin", 1, pInvestorPosition->UseMargin);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "frozenMargin", 1, pInvestorPosition->FrozenMargin);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "frozenCash", 1, pInvestorPosition->FrozenCash);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "frozenCommission", 1, pInvestorPosition->FrozenCommission);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "commission", 1, pInvestorPosition->Commission);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "closeProfit", 1, pInvestorPosition->CloseProfit);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "positionProfit", 1, pInvestorPosition->PositionProfit);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "preSettlementPrice", 1, pInvestorPosition->PreSettlementPrice);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "settlementPrice", 1, pInvestorPosition->SettlementPrice);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "tradingDay", pInvestorPosition->TradingDay);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "settlementID", 2, pInvestorPosition->SettlementID);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "openCost", 1, pInvestorPosition->OpenCost);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "exchangeMargin", 1, pInvestorPosition->ExchangeMargin);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "closeProfitByDate", 1, pInvestorPosition->CloseProfitByDate);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "closeProfitByTrade", 1, pInvestorPosition->CloseProfitByTrade);
+	Common::loadClass(env, &investorPositionCls, &investorPositionObj, "todayPosition", 2, pInvestorPosition->TodayPosition);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 	
-	env->CallVoidMethod(jTraderSpi, methodid, rspQryInvestorPositionObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jTraderSpi, methodid, investorPositionObj, rspInfoObj, nRequestID, bIsLast);
 
 	traderJvm->DetachCurrentThread();
 }
@@ -237,41 +237,41 @@ void TraderSpi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailF
 		traderJvm->DetachCurrentThread();
 		return;
 	}
-
-	jclass rspQryInvestorPositionDetailCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInvestorPositionDetailField");
-	jobject rspQryInvestorPositionDetailObj = env->AllocObject(rspQryInvestorPositionDetailCls);
+	
+	jclass investorPositionDetailCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInvestorPositionDetailField");
+	jobject investorPositionDetailObj = env->AllocObject(investorPositionDetailCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "instrumentID", 0, env->NewStringUTF(pInvestorPositionDetail->InstrumentID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "brokerID", 0, env->NewStringUTF(pInvestorPositionDetail->BrokerID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "investorID", 0, env->NewStringUTF(pInvestorPositionDetail->InvestorID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "hedgeFlag", 0, env->NewStringUTF(&pInvestorPositionDetail->HedgeFlag), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "direction", 0, env->NewStringUTF(&pInvestorPositionDetail->Direction), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "openDate", 0, env->NewStringUTF(pInvestorPositionDetail->OpenDate), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "tradeID", 0, env->NewStringUTF(pInvestorPositionDetail->TradeID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "volume", 2, NULL, 0, pInvestorPositionDetail->Volume);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "openPrice", 1, NULL, pInvestorPositionDetail->OpenPrice, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "tradingDay", 0, env->NewStringUTF(pInvestorPositionDetail->TradingDay), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "settlementID", 2, NULL, 0, pInvestorPositionDetail->SettlementID);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "tradeType", 0, env->NewStringUTF(&pInvestorPositionDetail->TradeType), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "combInstrumentID", 0, env->NewStringUTF(pInvestorPositionDetail->CombInstrumentID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "exchangeID", 0, env->NewStringUTF(pInvestorPositionDetail->ExchangeID), 0, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "closeProfitByDate", 1, NULL, pInvestorPositionDetail->CloseProfitByDate, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "closeProfitByTrade", 1, NULL, pInvestorPositionDetail->CloseProfitByTrade, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "positionProfitByDate", 1, NULL, pInvestorPositionDetail->PositionProfitByDate, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "positionProfitByTrade", 1, NULL, pInvestorPositionDetail->PositionProfitByTrade, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "margin", 1, NULL, pInvestorPositionDetail->Margin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "exchMargin", 1, NULL, pInvestorPositionDetail->ExchMargin, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "marginRateByMoney", 1, NULL, pInvestorPositionDetail->MarginRateByMoney, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "marginRateByVolume", 1, NULL, pInvestorPositionDetail->MarginRateByVolume, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "lastSettlementPrice", 1, NULL, pInvestorPositionDetail->LastSettlementPrice, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "settlementPrice", 1, NULL, pInvestorPositionDetail->SettlementPrice, 0);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "closeVolume", 2, NULL, 0, pInvestorPositionDetail->CloseVolume);
-	Common::loadClass(env, &rspQryInvestorPositionDetailCls, &rspQryInvestorPositionDetailObj, "closeAmount", 1, NULL, pInvestorPositionDetail->CloseAmount, 0);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "instrumentID", 0, pInvestorPositionDetail->InstrumentID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "brokerID", 0, pInvestorPositionDetail->BrokerID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "investorID", 0, pInvestorPositionDetail->InvestorID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "hedgeFlag", 2, pInvestorPositionDetail->HedgeFlag);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "direction", 2,  pInvestorPositionDetail->Direction);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "openDate", 0, pInvestorPositionDetail->OpenDate);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "tradeID", 0, pInvestorPositionDetail->TradeID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "volume", 2,  pInvestorPositionDetail->Volume);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "openPrice", 1, pInvestorPositionDetail->OpenPrice);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "tradingDay", 0, pInvestorPositionDetail->TradingDay);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "settlementID", 2,  pInvestorPositionDetail->SettlementID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "tradeType", 0,  pInvestorPositionDetail->TradeType);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "combInstrumentID", 0, pInvestorPositionDetail->CombInstrumentID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "exchangeID", 0, pInvestorPositionDetail->ExchangeID);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "closeProfitByDate", 1, pInvestorPositionDetail->CloseProfitByDate);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "closeProfitByTrade", 1, pInvestorPositionDetail->CloseProfitByTrade);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "positionProfitByDate", 1, pInvestorPositionDetail->PositionProfitByDate);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "positionProfitByTrade", 1, pInvestorPositionDetail->PositionProfitByTrade);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "margin", 1, pInvestorPositionDetail->Margin);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "exchMargin", 1, pInvestorPositionDetail->ExchMargin);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "marginRateByMoney", 1, pInvestorPositionDetail->MarginRateByMoney);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "marginRateByVolume", 1, pInvestorPositionDetail->MarginRateByVolume);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "lastSettlementPrice", 1, pInvestorPositionDetail->LastSettlementPrice);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "settlementPrice", 1, pInvestorPositionDetail->SettlementPrice);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "closeVolume", 2,  pInvestorPositionDetail->CloseVolume);
+	Common::loadClass(env, &investorPositionDetailCls, &investorPositionDetailObj, "closeAmount", 1, pInvestorPositionDetail->CloseAmount);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
 	
-	env->CallVoidMethod(jTraderSpi, methodid, rspQryInvestorPositionDetailObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jTraderSpi, methodid, investorPositionDetailObj, rspInfoObj, nRequestID, bIsLast);
 
 	traderJvm->DetachCurrentThread();
 }
@@ -288,73 +288,73 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder){
 		return;
 	}
 
-	jclass rtnOrderCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcOrderField");
-	jobject rtnOrderObj = env->AllocObject(rtnOrderCls);
+	jclass orderCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcOrderField");
+	jobject orderObj = env->AllocObject(orderCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "brokerID", 0, env->NewStringUTF(pOrder->BrokerID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "investorID", 0, env->NewStringUTF(pOrder->InvestorID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "instrumentID", 0, env->NewStringUTF(pOrder->InstrumentID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderRef", 0, env->NewStringUTF(pOrder->OrderRef), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "userID", 0, env->NewStringUTF(pOrder->UserID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderPriceType", 0, env->NewStringUTF(&pOrder->OrderPriceType), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "direction", 0, env->NewStringUTF(&pOrder->Direction), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "combOffsetFlag", 0, env->NewStringUTF(pOrder->CombOffsetFlag), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "combHedgeFlag", 0, env->NewStringUTF(pOrder->CombHedgeFlag), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "limitPrice", 1, NULL, pOrder->LimitPrice, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "volumeTotalOriginal", 2, NULL, 0, pOrder->VolumeTotalOriginal);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "timeCondition", 0, env->NewStringUTF(&pOrder->TimeCondition), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "gTDDate", 0, env->NewStringUTF(pOrder->GTDDate), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "volumeCondition", 2, NULL, 0, pOrder->VolumeCondition);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "minVolume", 2, NULL, 0, pOrder->MinVolume);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "contingentCondition", 0, env->NewStringUTF(&pOrder->ContingentCondition), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "stopPrice", 1, NULL, pOrder->StopPrice, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "forceCloseReason", 0, env->NewStringUTF(&pOrder->ForceCloseReason), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "isAutoSuspend", 2, NULL, 0, pOrder->IsAutoSuspend);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "businessUnit", 0, env->NewStringUTF(pOrder->BusinessUnit), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "requestID", 2, NULL, 0, pOrder->RequestID);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderLocalID", 0, env->NewStringUTF(pOrder->OrderLocalID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "exchangeID", 0, env->NewStringUTF(pOrder->ExchangeID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "participantID", 0, env->NewStringUTF(pOrder->ParticipantID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "clientID", 0, env->NewStringUTF(pOrder->ClientID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "exchangeInstID", 0, env->NewStringUTF(pOrder->ExchangeInstID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "traderID", 0, env->NewStringUTF(pOrder->TraderID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "installID", 2, NULL, 0, pOrder->InstallID);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderSubmitStatus", 0, env->NewStringUTF(&pOrder->OrderSubmitStatus), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "notifySequence", 2, NULL, 0, pOrder->NotifySequence);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "tradingDay", 0, env->NewStringUTF(pOrder->TradingDay), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "settlementID", 2, NULL, 0, pOrder->SettlementID);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderSysID", 0, env->NewStringUTF(pOrder->OrderSysID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderSource", 0, env->NewStringUTF(&pOrder->OrderSource), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderStatus", 0, env->NewStringUTF(&pOrder->OrderStatus), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "orderType", 0, env->NewStringUTF(&pOrder->OrderType), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "volumeTraded", 2, NULL, 0, pOrder->VolumeTraded);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "volumeTotal", 2, NULL, 0, pOrder->VolumeTotal);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "insertDate", 0, env->NewStringUTF(pOrder->InsertDate), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "insertTime", 0, env->NewStringUTF(pOrder->InsertTime), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "activeTime", 0, env->NewStringUTF(pOrder->ActiveTime), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "suspendTime", 0, env->NewStringUTF(pOrder->SuspendTime), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "updateTime", 0, env->NewStringUTF(pOrder->UpdateTime), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "cancelTime", 0, env->NewStringUTF(pOrder->CancelTime), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "activeTraderID", 0, env->NewStringUTF(pOrder->ActiveTraderID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "clearingPartID", 0, env->NewStringUTF(pOrder->ClearingPartID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "sequenceNo", 2, NULL, 0, pOrder->SequenceNo);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "frontID", 2, NULL, 0, pOrder->FrontID);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "sessionID", 2, NULL, 0, pOrder->SessionID);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "userProductInfo", 0, env->NewStringUTF(pOrder->UserProductInfo), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "statusMsg", 0, env->NewStringUTF(pOrder->StatusMsg), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "userForceClose", 2, NULL, 0, pOrder->UserForceClose);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "activeUserID", 0, env->NewStringUTF(pOrder->ActiveUserID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "brokerOrderSeq", 2, NULL, 0, pOrder->BrokerOrderSeq);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "relativeOrderSysID", 0, env->NewStringUTF(pOrder->RelativeOrderSysID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "zCETotalTradedVolume", 2, NULL, 0, pOrder->ZCETotalTradedVolume);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "isSwapOrder", 2, NULL, 0, pOrder->IsSwapOrder);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "branchID", 0, env->NewStringUTF(pOrder->BranchID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "investUnitID", 0, env->NewStringUTF(pOrder->InvestUnitID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "accountID", 0, env->NewStringUTF(pOrder->AccountID), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "iPAddress", 0, env->NewStringUTF(pOrder->IPAddress), 0, 0);
-	Common::loadClass(env, &rtnOrderCls, &rtnOrderObj, "macAddress", 0, env->NewStringUTF(pOrder->MacAddress), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "brokerID", 0, pOrder->BrokerID);
+	Common::loadClass(env, &orderCls, &orderObj, "investorID", 0, pOrder->InvestorID);
+	Common::loadClass(env, &orderCls, &orderObj, "instrumentID", 0, pOrder->InstrumentID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderRef", 0, pOrder->OrderRef);
+	Common::loadClass(env, &orderCls, &orderObj, "userID", 0, pOrder->UserID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderPriceType", 0, pOrder->OrderPriceType);
+	Common::loadClass(env, &orderCls, &orderObj, "direction", 0, pOrder->Direction);
+	Common::loadClass(env, &orderCls, &orderObj, "combOffsetFlag", 0, pOrder->CombOffsetFlag);
+	Common::loadClass(env, &orderCls, &orderObj, "combHedgeFlag", 0, pOrder->CombHedgeFlag);
+	Common::loadClass(env, &orderCls, &orderObj, "limitPrice", 1, pOrder->LimitPrice);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTotalOriginal", 2, pOrder->VolumeTotalOriginal);
+	Common::loadClass(env, &orderCls, &orderObj, "timeCondition", 0, pOrder->TimeCondition);
+	Common::loadClass(env, &orderCls, &orderObj, "gTDDate", 0, pOrder->GTDDate);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeCondition", 2, pOrder->VolumeCondition);
+	Common::loadClass(env, &orderCls, &orderObj, "minVolume", 2,  pOrder->MinVolume);
+	Common::loadClass(env, &orderCls, &orderObj, "contingentCondition", 0, pOrder->ContingentCondition);
+	Common::loadClass(env, &orderCls, &orderObj, "stopPrice", 1, pOrder->StopPrice);
+	Common::loadClass(env, &orderCls, &orderObj, "forceCloseReason", 0, pOrder->ForceCloseReason);
+	Common::loadClass(env, &orderCls, &orderObj, "isAutoSuspend", 2,  pOrder->IsAutoSuspend);
+	Common::loadClass(env, &orderCls, &orderObj, "businessUnit", 0, pOrder->BusinessUnit);
+	Common::loadClass(env, &orderCls, &orderObj, "requestID", 2,  pOrder->RequestID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderLocalID", 0, pOrder->OrderLocalID);
+	Common::loadClass(env, &orderCls, &orderObj, "exchangeID", 0, pOrder->ExchangeID);
+	Common::loadClass(env, &orderCls, &orderObj, "participantID", 0, pOrder->ParticipantID);
+	Common::loadClass(env, &orderCls, &orderObj, "clientID", 0, pOrder->ClientID);
+	Common::loadClass(env, &orderCls, &orderObj, "exchangeInstID", 0, pOrder->ExchangeInstID);
+	Common::loadClass(env, &orderCls, &orderObj, "traderID", 0, pOrder->TraderID);
+	Common::loadClass(env, &orderCls, &orderObj, "installID", 2,  pOrder->InstallID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSubmitStatus", 0, pOrder->OrderSubmitStatus);
+	Common::loadClass(env, &orderCls, &orderObj, "notifySequence", 2,  pOrder->NotifySequence);
+	Common::loadClass(env, &orderCls, &orderObj, "tradingDay", 0, pOrder->TradingDay);
+	Common::loadClass(env, &orderCls, &orderObj, "settlementID", 2,  pOrder->SettlementID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSysID", 0, pOrder->OrderSysID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSource", 0, pOrder->OrderSource);
+	Common::loadClass(env, &orderCls, &orderObj, "orderStatus", 0, pOrder->OrderStatus);
+	Common::loadClass(env, &orderCls, &orderObj, "orderType", 0, pOrder->OrderType);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTraded", 2,  pOrder->VolumeTraded);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTotal", 2,  pOrder->VolumeTotal);
+	Common::loadClass(env, &orderCls, &orderObj, "insertDate", 0, pOrder->InsertDate);
+	Common::loadClass(env, &orderCls, &orderObj, "insertTime", 0, pOrder->InsertTime);
+	Common::loadClass(env, &orderCls, &orderObj, "activeTime", 0, pOrder->ActiveTime);
+	Common::loadClass(env, &orderCls, &orderObj, "suspendTime", 0, pOrder->SuspendTime);
+	Common::loadClass(env, &orderCls, &orderObj, "updateTime", 0, pOrder->UpdateTime);
+	Common::loadClass(env, &orderCls, &orderObj, "cancelTime", 0, pOrder->CancelTime);
+	Common::loadClass(env, &orderCls, &orderObj, "activeTraderID", 0, pOrder->ActiveTraderID);
+	Common::loadClass(env, &orderCls, &orderObj, "clearingPartID", 0, pOrder->ClearingPartID);
+	Common::loadClass(env, &orderCls, &orderObj, "sequenceNo", 2,  pOrder->SequenceNo);
+	Common::loadClass(env, &orderCls, &orderObj, "frontID", 2,  pOrder->FrontID);
+	Common::loadClass(env, &orderCls, &orderObj, "sessionID", 2,  pOrder->SessionID);
+	Common::loadClass(env, &orderCls, &orderObj, "userProductInfo", 0, pOrder->UserProductInfo);
+	Common::loadClass(env, &orderCls, &orderObj, "statusMsg", 0, pOrder->StatusMsg);
+	Common::loadClass(env, &orderCls, &orderObj, "userForceClose", 2,  pOrder->UserForceClose);
+	Common::loadClass(env, &orderCls, &orderObj, "activeUserID", 0, pOrder->ActiveUserID);
+	Common::loadClass(env, &orderCls, &orderObj, "brokerOrderSeq", 2,  pOrder->BrokerOrderSeq);
+	Common::loadClass(env, &orderCls, &orderObj, "relativeOrderSysID", 0, pOrder->RelativeOrderSysID);
+	Common::loadClass(env, &orderCls, &orderObj, "zCETotalTradedVolume", 2,  pOrder->ZCETotalTradedVolume);
+	Common::loadClass(env, &orderCls, &orderObj, "isSwapOrder", 2,  pOrder->IsSwapOrder);
+	Common::loadClass(env, &orderCls, &orderObj, "branchID", 0, pOrder->BranchID);
+	Common::loadClass(env, &orderCls, &orderObj, "investUnitID", 0, pOrder->InvestUnitID);
+	Common::loadClass(env, &orderCls, &orderObj, "accountID", 0, pOrder->AccountID);
+	Common::loadClass(env, &orderCls, &orderObj, "iPAddress", 0, pOrder->IPAddress);
+	Common::loadClass(env, &orderCls, &orderObj, "macAddress", 0, pOrder->MacAddress);
 
-	env->CallVoidMethod(jTraderSpi, methodid, rtnOrderObj);
+	env->CallVoidMethod(jTraderSpi, methodid, orderObj);
 
 	traderJvm->DetachCurrentThread();
 }
@@ -366,52 +366,335 @@ void TraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostF
 	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRspOrderInsert", "(Lorg/zhps/hjctp/entity/CThostFtdcInputOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");	
 
 	if(pInputOrder == 0){
+		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL, nRequestID, bIsLast);	
+		traderJvm->DetachCurrentThread();
+		return;
+	}
+
+	jclass inputOrderCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInputOrderField");
+	jobject inputOrderObj = env->AllocObject(inputOrderCls);
+	//type: 0.string, 1.double, 2.int
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "brokerID", 0, pInputOrder->BrokerID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "investorID", 0, pInputOrder->InvestorID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "instrumentID", 0, pInputOrder->InstrumentID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "orderRef", 0, pInputOrder->OrderRef);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "userID", 0, pInputOrder->UserID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "orderPriceType", 0, pInputOrder->OrderPriceType);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "direction", 0, pInputOrder->Direction);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "combOffsetFlag", 0, pInputOrder->CombOffsetFlag);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "combHedgeFlag", 0, pInputOrder->CombHedgeFlag);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "limitPrice", 1, pInputOrder->LimitPrice);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "volumeTotalOriginal", 2, 0, pInputOrder->VolumeTotalOriginal);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "timeCondition", 0, pInputOrder->TimeCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "gTDDate", 0, pInputOrder->GTDDate);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "volumeCondition", 2, 0, pInputOrder->VolumeCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "minVolume", 2, 0, pInputOrder->MinVolume);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "contingentCondition", 0, &pInputOrder->ContingentCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "stopPrice", 1, pInputOrder->StopPrice);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "forceCloseReason", 0, pInputOrder->ForceCloseReason);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "isAutoSuspend", 2, 0, pInputOrder->IsAutoSuspend);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "businessUnit", 0, pInputOrder->BusinessUnit);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "requestID", 2, 0, pInputOrder->RequestID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "userForceClose", 2, 0, pInputOrder->UserForceClose);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "isSwapOrder", 2, 0, pInputOrder->IsSwapOrder);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "exchangeID", 0, pInputOrder->ExchangeID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "investUnitID", 0, pInputOrder->InvestUnitID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "accountID", 0, pInputOrder->AccountID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "clientID", 0, pInputOrder->ClientID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "iPAddress", 0, pInputOrder->IPAddress);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "macAddress", 0, pInputOrder->MacAddress);
+
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
+	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	
+	env->CallVoidMethod(jTraderSpi, methodid, inputOrderObj, rspInfoObj, nRequestID, bIsLast);
+
+	traderJvm->DetachCurrentThread();
+}
+
+void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo){
+	JNIEnv *env; 
+	traderJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderInsert", "(Lorg/zhps/hjctp/entity/CThostFtdcInputOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField)V");	
+
+	if(pInputOrder == 0){
+		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL);	
+		traderJvm->DetachCurrentThread();
+		return;
+	}
+
+	jclass inputOrderCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInputOrderField");
+	jobject inputOrderObj = env->AllocObject(inputOrderCls);
+	//type: 0.string, 1.double, 2.int
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "brokerID", 0, pInputOrder->BrokerID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "investorID", 0, pInputOrder->InvestorID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "instrumentID", 0, pInputOrder->InstrumentID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "orderRef", 0, pInputOrder->OrderRef);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "userID", 0, pInputOrder->UserID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "orderPriceType", 0, pInputOrder->OrderPriceType);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "direction", 0, pInputOrder->Direction);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "combOffsetFlag", 0, pInputOrder->CombOffsetFlag);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "combHedgeFlag", 0, pInputOrder->CombHedgeFlag);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "limitPrice", 1, pInputOrder->LimitPrice);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "volumeTotalOriginal", 2,  pInputOrder->VolumeTotalOriginal);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "timeCondition", 0, pInputOrder->TimeCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "gTDDate", 0, pInputOrder->GTDDate);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "volumeCondition", 2,  pInputOrder->VolumeCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "minVolume", 2,  pInputOrder->MinVolume);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "contingentCondition", 0, &pInputOrder->ContingentCondition);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "stopPrice", 1, pInputOrder->StopPrice);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "forceCloseReason", 0, &pInputOrder->ForceCloseReason);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "isAutoSuspend", 2,  pInputOrder->IsAutoSuspend);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "businessUnit", 0, pInputOrder->BusinessUnit);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "requestID", 2,  pInputOrder->RequestID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "userForceClose", 2,  pInputOrder->UserForceClose);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "isSwapOrder", 2,  pInputOrder->IsSwapOrder);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "exchangeID", 0, pInputOrder->ExchangeID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "investUnitID", 0, pInputOrder->InvestUnitID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "accountID", 0, pInputOrder->AccountID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "clientID", 0, pInputOrder->ClientID);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "iPAddress", 0, pInputOrder->IPAddress);
+	Common::loadClass(env, &inputOrderCls, &inputOrderObj, "macAddress", 0, pInputOrder->MacAddress);
+
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
+	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	
+	env->CallVoidMethod(jTraderSpi, methodid, inputOrderObj, rspInfoObj);
+
+	traderJvm->DetachCurrentThread();
+}
+
+void TraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade){
+	JNIEnv *env; 
+	traderJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnTrade", "(Lorg/zhps/hjctp/entity/CThostFtdcTradeField)V");	
+
+	if(pTrade == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL);	
 		traderJvm->DetachCurrentThread();
 		return;
 	}
 
-	jclass rspOrderInsertCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInputOrderField");
-	jobject rspOrderInsertObj = env->AllocObject(rspOrderInsertCls);
+	jclass tradeCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcTradeField");
+	jobject tradeObj = env->AllocObject(tradeCls);
 	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "brokerID", 0, env->NewStringUTF(pInputOrder->BrokerID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "investorID", 0, env->NewStringUTF(pInputOrder->InvestorID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "instrumentID", 0, env->NewStringUTF(pInputOrder->InstrumentID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "orderRef", 0, env->NewStringUTF(pInputOrder->OrderRef), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "userID", 0, env->NewStringUTF(pInputOrder->UserID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "orderPriceType", 0, env->NewStringUTF(&pInputOrder->OrderPriceType), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "direction", 0, env->NewStringUTF(&pInputOrder->Direction), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "combOffsetFlag", 0, env->NewStringUTF(pInputOrder->CombOffsetFlag), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "combHedgeFlag", 0, env->NewStringUTF(pInputOrder->CombHedgeFlag), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "limitPrice", 1, NULL, pInputOrder->LimitPrice, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "volumeTotalOriginal", 2, NULL, 0, pInputOrder->VolumeTotalOriginal);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "timeCondition", 0, env->NewStringUTF(&pInputOrder->TimeCondition), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "gTDDate", 0, env->NewStringUTF(pInputOrder->GTDDate), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "volumeCondition", 2, NULL, 0, pInputOrder->VolumeCondition);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "minVolume", 2, NULL, 0, pInputOrder->MinVolume);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "contingentCondition", 0, env->NewStringUTF(&pInputOrder->ContingentCondition), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "stopPrice", 1, NULL, pInputOrder->StopPrice, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "forceCloseReason", 0, env->NewStringUTF(&pInputOrder->ForceCloseReason), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "isAutoSuspend", 2, NULL, 0, pInputOrder->IsAutoSuspend);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "businessUnit", 0, env->NewStringUTF(pInputOrder->BusinessUnit), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "requestID", 2, NULL, 0, pInputOrder->RequestID);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "userForceClose", 2, NULL, 0, pInputOrder->UserForceClose);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "isSwapOrder", 2, NULL, 0, pInputOrder->IsSwapOrder);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "exchangeID", 0, env->NewStringUTF(pInputOrder->ExchangeID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "investUnitID", 0, env->NewStringUTF(pInputOrder->InvestUnitID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "accountID", 0, env->NewStringUTF(pInputOrder->AccountID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "clientID", 0, env->NewStringUTF(pInputOrder->ClientID), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "iPAddress", 0, env->NewStringUTF(pInputOrder->IPAddress), 0, 0);
-	Common::loadClass(env, &rspOrderInsertCls, &rspOrderInsertObj, "macAddress", 0, env->NewStringUTF(pInputOrder->MacAddress), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "brokerID", 0, env->NewStringUTF(pTrade->BrokerID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "investorID", 0, env->NewStringUTF(pTrade->InvestorID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "instrumentID", 0, env->NewStringUTF(pTrade->InstrumentID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "orderRef", 0, env->NewStringUTF(pTrade->OrderRef), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "userID", 0, env->NewStringUTF(pTrade->UserID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "exchangeID", 0, env->NewStringUTF(pTrade->ExchangeID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradeID", 0, env->NewStringUTF(pTrade->TradeID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "direction", 0, env->NewStringUTF(&pTrade->Direction), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "orderSysID", 0, env->NewStringUTF(pTrade->OrderSysID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "participantID", 0, env->NewStringUTF(pTrade->ParticipantID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "clientID", 0, env->NewStringUTF(pTrade->ClientID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradingRole", 0, env->NewStringUTF(&pTrade->TradingRole), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "exchangeInstID", 0, env->NewStringUTF(pTrade->ExchangeInstID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "offsetFlag", 0, env->NewStringUTF(&pTrade->OffsetFlag), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "hedgeFlag", 0, env->NewStringUTF(&pTrade->HedgeFlag), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "price", 1, NULL, pTrade->Price, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "volume", 2, NULL, 0, pTrade->Volume);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradeDate", 0, env->NewStringUTF(pTrade->TradeDate), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradeTime", 0, env->NewStringUTF(pTrade->TradeTime), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradeType", 0, env->NewStringUTF(&pTrade->TradeType), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "priceSource", 0, env->NewStringUTF(&pTrade->PriceSource), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "traderID", 0, env->NewStringUTF(pTrade->TraderID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "orderLocalID", 0, env->NewStringUTF(pTrade->OrderLocalID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "clearingPartID", 0, env->NewStringUTF(pTrade->ClearingPartID), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "businessUnit", 0, env->NewStringUTF(pTrade->BusinessUnit), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "sequenceNo", 2, NULL, 0, pTrade->SequenceNo);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradingDay", 0, env->NewStringUTF(pTrade->TradingDay), 0, 0);
+	Common::loadClass(env, &tradeCls, &tradeObj, "settlementID", 2, NULL, 0, pTrade->SettlementID);
+	Common::loadClass(env, &tradeCls, &tradeObj, "brokerOrderSeq", 2, NULL, 0, pTrade->BrokerOrderSeq);
+	Common::loadClass(env, &tradeCls, &tradeObj, "tradeSource", 0, env->NewStringUTF(&pTrade->TradeSource), 0, 0);
 
-	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
-	jobject rspInfoObj = env->AllocObject(rspInfoCls);
-	
-	env->CallVoidMethod(jTraderSpi, methodid, rspOrderInsertObj, rspInfoObj, nRequestID, bIsLast);
+	env->CallVoidMethod(jTraderSpi, methodid, tradeObj);
 
 	traderJvm->DetachCurrentThread();
 }
 
+void TraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){
+	JNIEnv *env; 
+	traderJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRspOrderAction", "(Lorg/zhps/hjctp/entity/CThostFtdcInputOrderActionField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");	
+
+	if(pInputOrderAction == 0){
+		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL, nRequestID, bIsLast);	
+		traderJvm->DetachCurrentThread();
+		return;
+	}
+
+	jclass inputOrderActionCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcInputOrderActionField");
+	jobject inputOrderActionObj = env->AllocObject(inputOrderActionCls);
+	//type: 0.string, 1.double, 2.int
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "brokerID", 0, env->NewStringUTF(pInputOrderAction->BrokerID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "investorID", 0, env->NewStringUTF(pInputOrderAction->InvestorID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "orderActionRef", 2, NULL, 0, pInputOrderAction->OrderActionRef);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "orderRef", 0, env->NewStringUTF(pInputOrderAction->OrderRef), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "requestID", 2, NULL, 0, pInputOrderAction->RequestID);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "frontID", 2, NULL, 0, pInputOrderAction->FrontID);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "sessionID", 2, NULL, 0, pInputOrderAction->SessionID);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "exchangeID", 0, env->NewStringUTF(pInputOrderAction->ExchangeID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "orderSysID", 0, env->NewStringUTF(pInputOrderAction->OrderSysID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "actionFlag", 0, env->NewStringUTF(&pInputOrderAction->ActionFlag), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "limitPrice", 1, NULL, pInputOrderAction->LimitPrice, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "volumeChange", 2, NULL, 0, pInputOrderAction->VolumeChange);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "userID", 0, env->NewStringUTF(pInputOrderAction->UserID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "instrumentID", 0, env->NewStringUTF(pInputOrderAction->InstrumentID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "investUnitID", 0, env->NewStringUTF(pInputOrderAction->InvestUnitID), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "iPAddress", 0, env->NewStringUTF(pInputOrderAction->IPAddress), 0, 0);
+	Common::loadClass(env, &inputOrderActionCls, &inputOrderActionObj, "macAddress", 0, env->NewStringUTF(pInputOrderAction->MacAddress), 0, 0);
+
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
+	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	
+	env->CallVoidMethod(jTraderSpi, methodid, inputOrderActionObj, rspInfoObj, nRequestID, bIsLast);
+
+	traderJvm->DetachCurrentThread();
+}
+
+void TraderSpi::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo){
+	JNIEnv *env; 
+	traderJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderAction", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderActionField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField)V");	
+
+	if(pOrderAction == 0){
+		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL);	
+		traderJvm->DetachCurrentThread();
+		return;
+	}
+
+	jclass orderActionCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcOrderActionField");
+	jobject orderActionObj = env->AllocObject(orderActionCls);
+	//type: 0.string, 1.double, 2.int
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "brokerID", 0, env->NewStringUTF(pOrderAction->BrokerID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "investorID", 0, env->NewStringUTF(pOrderAction->InvestorID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "orderActionRef", 2, NULL, 0, pOrderAction->OrderActionRef);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "orderRef", 0, env->NewStringUTF(pOrderAction->OrderRef), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "requestID", 2, NULL, 0, pOrderAction->RequestID);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "frontID", 2, NULL, 0, pOrderAction->FrontID);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "sessionID", 2, NULL, 0, pOrderAction->SessionID);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "exchangeID", 0, env->NewStringUTF(pOrderAction->ExchangeID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "orderSysID", 0, env->NewStringUTF(pOrderAction->OrderSysID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "actionFlag", 0, env->NewStringUTF(&pOrderAction->ActionFlag), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "limitPrice", 1, NULL, pOrderAction->LimitPrice, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "volumeChange", 2, NULL, 0, pOrderAction->VolumeChange);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "actionDate", 0, env->NewStringUTF(pOrderAction->ActionDate), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "actionTime", 0, env->NewStringUTF(pOrderAction->ActionTime), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "traderID", 0, env->NewStringUTF(pOrderAction->TraderID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "installID", 2, NULL, 0, pOrderAction->InstallID);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "orderLocalID", 0, env->NewStringUTF(pOrderAction->OrderLocalID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "actionLocalID", 0, env->NewStringUTF(pOrderAction->ActionLocalID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "participantID", 0, env->NewStringUTF(pOrderAction->ParticipantID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "clientID", 0, env->NewStringUTF(pOrderAction->ClientID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "businessUnit", 0, env->NewStringUTF(pOrderAction->BusinessUnit), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "orderActionStatus", 0, env->NewStringUTF(&pOrderAction->OrderActionStatus), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "userID", 0, env->NewStringUTF(pOrderAction->UserID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "statusMsg", 0, env->NewStringUTF(pOrderAction->StatusMsg), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "instrumentID", 0, env->NewStringUTF(pOrderAction->InstrumentID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "branchID", 0, env->NewStringUTF(pOrderAction->BranchID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "investUnitID", 0, env->NewStringUTF(pOrderAction->InvestUnitID), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "iPAddress", 0, env->NewStringUTF(pOrderAction->IPAddress), 0, 0);
+	Common::loadClass(env, &orderActionCls, &orderActionObj, "macAddress", 0, env->NewStringUTF(pOrderAction->MacAddress), 0, 0);
+
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
+	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	
+	env->CallVoidMethod(jTraderSpi, methodid, orderActionObj, rspInfoObj);
+
+	traderJvm->DetachCurrentThread();
+}
+
+void TraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){
+	JNIEnv *env; 
+	traderJvm->AttachCurrentThread((void **)&env, NULL);
+	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRspQryOrder", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");	
+
+	if(pOrder == 0){
+		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL, nRequestID, bIsLast);	
+		traderJvm->DetachCurrentThread();
+		return;
+	}
+
+	jclass orderCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcOrderField");
+	jobject orderObj = env->AllocObject(orderCls);
+	//type: 0.string, 1.double, 2.int
+	Common::loadClass(env, &orderCls, &orderObj, "brokerID", 0, env->NewStringUTF(pOrder->BrokerID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "investorID", 0, env->NewStringUTF(pOrder->InvestorID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "instrumentID", 0, env->NewStringUTF(pOrder->InstrumentID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "orderRef", 0, env->NewStringUTF(pOrder->OrderRef), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "userID", 0, env->NewStringUTF(pOrder->UserID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "orderPriceType", 0, env->NewStringUTF(&pOrder->OrderPriceType), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "direction", 0, env->NewStringUTF(&pOrder->Direction), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "combOffsetFlag", 0, env->NewStringUTF(pOrder->CombOffsetFlag), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "combHedgeFlag", 0, env->NewStringUTF(pOrder->CombHedgeFlag), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "limitPrice", 1, NULL, pOrder->LimitPrice, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTotalOriginal", 2, NULL, 0, pOrder->VolumeTotalOriginal);
+	Common::loadClass(env, &orderCls, &orderObj, "timeCondition", 0, env->NewStringUTF(&pOrder->TimeCondition), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "gTDDate", 0, env->NewStringUTF(pOrder->GTDDate), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeCondition", 2, NULL, 0, pOrder->VolumeCondition);
+	Common::loadClass(env, &orderCls, &orderObj, "minVolume", 2, NULL, 0, pOrder->MinVolume);
+	Common::loadClass(env, &orderCls, &orderObj, "contingentCondition", 0, env->NewStringUTF(&pOrder->ContingentCondition), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "stopPrice", 1, NULL, pOrder->StopPrice, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "forceCloseReason", 0, env->NewStringUTF(&pOrder->ForceCloseReason), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "isAutoSuspend", 2, NULL, 0, pOrder->IsAutoSuspend);
+	Common::loadClass(env, &orderCls, &orderObj, "businessUnit", 0, env->NewStringUTF(pOrder->BusinessUnit), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "requestID", 2, NULL, 0, pOrder->RequestID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderLocalID", 0, env->NewStringUTF(pOrder->OrderLocalID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "exchangeID", 0, env->NewStringUTF(pOrder->ExchangeID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "participantID", 0, env->NewStringUTF(pOrder->ParticipantID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "clientID", 0, env->NewStringUTF(pOrder->ClientID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "exchangeInstID", 0, env->NewStringUTF(pOrder->ExchangeInstID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "traderID", 0, env->NewStringUTF(pOrder->TraderID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "installID", 2, NULL, 0, pOrder->InstallID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSubmitStatus", 0, env->NewStringUTF(&pOrder->OrderSubmitStatus), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "notifySequence", 2, NULL, 0, pOrder->NotifySequence);
+	Common::loadClass(env, &orderCls, &orderObj, "tradingDay", 0, env->NewStringUTF(pOrder->TradingDay), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "settlementID", 2, NULL, 0, pOrder->SettlementID);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSysID", 0, env->NewStringUTF(pOrder->OrderSysID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "orderSource", 0, env->NewStringUTF(&pOrder->OrderSource), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "orderStatus", 0, env->NewStringUTF(&pOrder->OrderStatus), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "orderType", 0, env->NewStringUTF(&pOrder->OrderType), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTraded", 2, NULL, 0, pOrder->VolumeTraded);
+	Common::loadClass(env, &orderCls, &orderObj, "volumeTotal", 2, NULL, 0, pOrder->VolumeTotal);
+	Common::loadClass(env, &orderCls, &orderObj, "insertDate", 0, env->NewStringUTF(pOrder->InsertDate), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "insertTime", 0, env->NewStringUTF(pOrder->InsertTime), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "activeTime", 0, env->NewStringUTF(pOrder->ActiveTime), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "suspendTime", 0, env->NewStringUTF(pOrder->SuspendTime), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "updateTime", 0, env->NewStringUTF(pOrder->UpdateTime), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "cancelTime", 0, env->NewStringUTF(pOrder->CancelTime), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "activeTraderID", 0, env->NewStringUTF(pOrder->ActiveTraderID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "clearingPartID", 0, env->NewStringUTF(pOrder->ClearingPartID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "sequenceNo", 2, NULL, 0, pOrder->SequenceNo);
+	Common::loadClass(env, &orderCls, &orderObj, "frontID", 2, NULL, 0, pOrder->FrontID);
+	Common::loadClass(env, &orderCls, &orderObj, "sessionID", 2, NULL, 0, pOrder->SessionID);
+	Common::loadClass(env, &orderCls, &orderObj, "userProductInfo", 0, env->NewStringUTF(pOrder->UserProductInfo), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "statusMsg", 0, env->NewStringUTF(pOrder->StatusMsg), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "userForceClose", 2, NULL, 0, pOrder->UserForceClose);
+	Common::loadClass(env, &orderCls, &orderObj, "activeUserID", 0, env->NewStringUTF(pOrder->ActiveUserID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "brokerOrderSeq", 2, NULL, 0, pOrder->BrokerOrderSeq);
+	Common::loadClass(env, &orderCls, &orderObj, "relativeOrderSysID", 0, env->NewStringUTF(pOrder->RelativeOrderSysID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "zCETotalTradedVolume", 2, NULL, 0, pOrder->ZCETotalTradedVolume);
+	Common::loadClass(env, &orderCls, &orderObj, "isSwapOrder", 2, NULL, 0, pOrder->IsSwapOrder);
+	Common::loadClass(env, &orderCls, &orderObj, "branchID", 0, env->NewStringUTF(pOrder->BranchID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "investUnitID", 0, env->NewStringUTF(pOrder->InvestUnitID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "accountID", 0, env->NewStringUTF(pOrder->AccountID), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "iPAddress", 0, env->NewStringUTF(pOrder->IPAddress), 0, 0);
+	Common::loadClass(env, &orderCls, &orderObj, "macAddress", 0, env->NewStringUTF(pOrder->MacAddress), 0, 0);
+
+	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
+	jobject rspInfoObj = env->AllocObject(rspInfoCls);
+	
+	env->CallVoidMethod(jTraderSpi, methodid, orderObj, rspInfoObj, nRequestID, bIsLast);
+
+	traderJvm->DetachCurrentThread();
+}
 
 
 

@@ -8,19 +8,23 @@ extern int iMdRequestID;
 extern JavaVM *traderJvm;
 extern jobject jTraderSpi;
 extern int iTdRequestID;
+using namespace std;
 
 class Common{
 public:
-	static void loadClass(JNIEnv *env, jclass *cls, jobject *obj, const char* filedName, int type, jobject sv, double dv, int iv){
-		if(type == 0){//string
-			jfieldID field = env->GetFieldID(*cls, filedName, "Ljava/lang/String;");
-			env->SetObjectField(*obj, field, sv);
-		}else if(type == 1){//double
-			jfieldID field = env->GetFieldID(*cls, filedName, "D");
-			env->SetDoubleField(*obj, field, dv);
-		}else if(type == 2){//int
-			jfieldID field = env->GetFieldID(*cls, filedName, "I");
-			env->SetIntField(*obj, field, iv);
-		}
+	template <typename T> static void loadClass(JNIEnv *env, jclass *cls, jobject *obj, const char* filedName, int type, T value){
+		//if(type == 0){//string
+		//	jfieldID field = env->GetFieldID(*cls, filedName, "Ljava/lang/String;");
+		//	env->SetObjectField(*obj, field, value);
+		//}else if(type == 1){//double
+		//	jfieldID field = env->GetFieldID(*cls, filedName, "D");
+		//	env->SetDoubleField(*obj, field, atof(value));
+		//}else if(type == 2){//int
+		//	jfieldID field = env->GetFieldID(*cls, filedName, "I");
+		//	env->SetIntField(*obj, field, atoi(value));
+		//}else if(type == 3){//char
+		//	jfieldID field = env->GetFieldID(*cls, filedName, "C");
+		//	env->SetCharField(*obj, field, value.c_srt());		
+		//}
 	}
 };
