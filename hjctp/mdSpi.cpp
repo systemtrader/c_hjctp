@@ -74,11 +74,10 @@ void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThos
 
 	jclass rspUserLoginCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspUserLoginField");
 	jobject rspUserLoginObj = env->AllocObject(rspUserLoginCls); 
-	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "tradingDay", 0, pRspUserLogin->TradingDay);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "loginTime", 0, pRspUserLogin->LoginTime);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "userId", 0, pRspUserLogin->UserID);
-	Common::loadClass(env, &rspUserLoginCls, &rspUserLoginObj, "shfeTime", 0, pRspUserLogin->SHFETime);
+	Common::assemString(env, &rspUserLoginCls, &rspUserLoginObj, "tradingDay", pRspUserLogin->TradingDay);
+	Common::assemString(env, &rspUserLoginCls, &rspUserLoginObj, "loginTime", pRspUserLogin->LoginTime);
+	Common::assemString(env, &rspUserLoginCls, &rspUserLoginObj, "userId", pRspUserLogin->UserID);
+	Common::assemString(env, &rspUserLoginCls, &rspUserLoginObj, "shfeTime", pRspUserLogin->SHFETime);
 
 	jclass rspInfoCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcRspInfoField");
 	jobject rspInfoObj = env->AllocObject(rspInfoCls);
@@ -102,25 +101,24 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 
 	jclass rtnDepthMarketDataCls = env->FindClass("org/zhps/hjctp/entity/CThostFtdcDepthMarketDataField");
 	jobject rtnDepthMarketDataObj =env->AllocObject(rtnDepthMarketDataCls); 
-	//type: 0.string, 1.double, 2.int
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "instrumentId", 0, pDepthMarketData->InstrumentID);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lastPrice", 1, pDepthMarketData->LastPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preSettlementPrice", 1, pDepthMarketData->PreSettlementPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preClosePrice", 1, pDepthMarketData->PreClosePrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preOpenInterest", 1, pDepthMarketData->PreOpenInterest);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openPrice", 1, pDepthMarketData->OpenPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "highestPrice", 1, pDepthMarketData->HighestPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lowestPrice", 1, pDepthMarketData->LowestPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "volume", 2, pDepthMarketData->Volume);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "turnover", 1, pDepthMarketData->Turnover);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openInterest", 1, pDepthMarketData->OpenInterest);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "closePrice", 1, pDepthMarketData->ClosePrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "settlementPrice", 1, pDepthMarketData->SettlementPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "upperLimitPrice", 1, pDepthMarketData->UpperLimitPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lowerLimitPrice", 1, pDepthMarketData->LowerLimitPrice);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "updateTime", 0, pDepthMarketData->UpdateTime);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "tradingDay", 0, pDepthMarketData->TradingDay);
-	Common::loadClass(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "updateMillisec", 2, pDepthMarketData->UpdateMillisec);
+	Common::assemString(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "instrumentId", pDepthMarketData->InstrumentID);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lastPrice", pDepthMarketData->LastPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preSettlementPrice", pDepthMarketData->PreSettlementPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preClosePrice", pDepthMarketData->PreClosePrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "preOpenInterest", pDepthMarketData->PreOpenInterest);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openPrice", pDepthMarketData->OpenPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "highestPrice", pDepthMarketData->HighestPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lowestPrice", pDepthMarketData->LowestPrice);
+	Common::assemInt(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "volume", pDepthMarketData->Volume);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "turnover", pDepthMarketData->Turnover);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openInterest", pDepthMarketData->OpenInterest);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "closePrice", pDepthMarketData->ClosePrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "settlementPrice", pDepthMarketData->SettlementPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "upperLimitPrice", pDepthMarketData->UpperLimitPrice);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lowerLimitPrice", pDepthMarketData->LowerLimitPrice);
+	Common::assemString(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "updateTime", pDepthMarketData->UpdateTime);
+	Common::assemString(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "tradingDay", pDepthMarketData->TradingDay);
+	Common::assemInt(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "updateMillisec", pDepthMarketData->UpdateMillisec);
 
 	env->CallVoidMethod(jMdSpi, methodid, rtnDepthMarketDataObj);
 
