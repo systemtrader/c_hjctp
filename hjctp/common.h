@@ -97,11 +97,12 @@ public:
 		env->DeleteLocalRef(str);
 	}
 
-	static void releaseLocalRef(int count, jobject obj ...){
+	static void releaseLocalRef(JNIEnv *env, int count, ...){
 		va_list arg_ptr;
 		va_start(arg_ptr, count);
 		for(int i = 0; i < count; i++){
-			cerr << va_arg(arg_ptr, jobject) << endl;
+			//cerr << va_arg(arg_ptr, jobject) << endl;
+			env->DeleteLocalRef(va_arg(arg_ptr, jobject));
 		}
 		va_end(arg_ptr);
 	}
