@@ -174,3 +174,19 @@ JNIEXPORT jint JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryInvestorPositio
 	strcpy(req.InvestorID, INVESTOR_ID);
 	return pTraderApi->ReqQryInvestorPositionDetail(&req, ++iTdRequestID);
 }
+
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryOrder
+	(JNIEnv *env, jclass, jobject qOrder){
+	CThostFtdcQryOrderField pQryOrder;
+	memset(&pQryOrder, 0, sizeof(pQryOrder));
+	/*const char* broker_id = Common::readString(env, qOrder, "brokerID");
+	const char* investor_id = Common::readString(env, qOrder, "investorID");
+	if(broker_id == 0 || investor_id == 0){
+		return;
+	}*/
+	strcpy(pQryOrder.BrokerID, BROKER_ID);
+	strcpy(pQryOrder.InvestorID, INVESTOR_ID);	
+	pTraderApi->ReqQryOrder(&pQryOrder, ++iTdRequestID);
+	/*Common::releaseUTFChar(env, broker_id);
+	Common::releaseUTFChar(env, investor_id);*/
+}

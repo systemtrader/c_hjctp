@@ -22,6 +22,9 @@ void TraderSpi::notifyFrontConnected(){
 	jclass cls = env->GetObjectClass(jTraderSpi); 
 	jmethodID methodid = env->GetMethodID(cls, "onFrontConnected", "()V");
 	env->CallVoidMethod(jTraderSpi, methodid);
+
+	cerr << "cls: " << cls << endl;
+	Common::releaseLocalRef(1, cls);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -70,6 +73,12 @@ void TraderSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, C
 
 	env->CallVoidMethod(jTraderSpi, methodid, rspUserLoginObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(rspUserLoginCls);
+	env->DeleteLocalRef(rspUserLoginObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -111,6 +120,12 @@ void TraderSpi::notifyRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFi
 	
 	env->CallVoidMethod(jTraderSpi, methodid, settlementInfoConfirmObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(settlementInfoConfirmCls);
+	env->DeleteLocalRef(settlementInfoConfirmObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -158,6 +173,12 @@ void TraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAc
 	
 	env->CallVoidMethod(jTraderSpi, methodid, tradingAccountObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(tradingAccountCls);
+	env->DeleteLocalRef(tradingAccountObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -215,6 +236,12 @@ void TraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInves
 	
 	env->CallVoidMethod(jTraderSpi, methodid, investorPositionObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(investorPositionCls);
+	env->DeleteLocalRef(investorPositionObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -264,6 +291,12 @@ void TraderSpi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailF
 	
 	env->CallVoidMethod(jTraderSpi, methodid, investorPositionDetailObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(investorPositionDetailCls);
+	env->DeleteLocalRef(investorPositionDetailObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -272,7 +305,7 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder){
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
 	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnOrder", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderField)V");
-
+	
 	if(pOrder == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL);	
 		traderJvm->DetachCurrentThread();
@@ -346,6 +379,10 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder){
 
 	env->CallVoidMethod(jTraderSpi, methodid, orderObj);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(orderCls);
+	env->DeleteLocalRef(orderObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -398,6 +435,12 @@ void TraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostF
 	
 	env->CallVoidMethod(jTraderSpi, methodid, inputOrderObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(inputOrderCls);
+	env->DeleteLocalRef(inputOrderObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -450,6 +493,12 @@ void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CTho
 	
 	env->CallVoidMethod(jTraderSpi, methodid, inputOrderObj, rspInfoObj);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(inputOrderCls);
+	env->DeleteLocalRef(inputOrderObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -500,6 +549,9 @@ void TraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade){
 
 	env->CallVoidMethod(jTraderSpi, methodid, tradeObj);
 
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(tradeCls);
+	env->DeleteLocalRef(tradeObj);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -540,6 +592,12 @@ void TraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAct
 	
 	env->CallVoidMethod(jTraderSpi, methodid, inputOrderActionObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(inputOrderActionCls);
+	env->DeleteLocalRef(inputOrderActionObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoCls);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -592,6 +650,12 @@ void TraderSpi::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CT
 	
 	env->CallVoidMethod(jTraderSpi, methodid, orderActionObj, rspInfoObj);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(orderActionCls);
+	env->DeleteLocalRef(orderActionObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoCls);
 	traderJvm->DetachCurrentThread();
 }
 
@@ -600,7 +664,7 @@ void TraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFie
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
 	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRspQryOrder", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;IZ)V");	
-
+	
 	if(pOrder == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL, nRequestID, bIsLast);	
 		traderJvm->DetachCurrentThread();
@@ -677,5 +741,11 @@ void TraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFie
 	
 	env->CallVoidMethod(jTraderSpi, methodid, orderObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	env->DeleteLocalRef(traderSpiCls);
+	env->DeleteLocalRef(orderCls);
+	env->DeleteLocalRef(orderObj);
+	env->DeleteLocalRef(rspInfoCls);
+	env->DeleteLocalRef(rspInfoCls);
 	traderJvm->DetachCurrentThread();
 }
