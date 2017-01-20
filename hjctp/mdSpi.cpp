@@ -27,6 +27,8 @@ void MdSpi::notifyFrontConnected(){
 	jclass cls = env->GetObjectClass(jMdSpi); 
 	jmethodID methodid = env->GetMethodID(cls, "onFrontConnected", "()V");
 	env->CallVoidMethod(jMdSpi, methodid);
+
+	Common::releaseLocalRef(env, 1, cls);
 	mdJvm->DetachCurrentThread();
 }
 
@@ -84,6 +86,8 @@ void MdSpi::notifyRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThos
 
 	env->CallVoidMethod(jMdSpi, methodid, rspUserLoginObj, rspInfoObj, nRequestID, bIsLast);
 
+
+	Common::releaseLocalRef(env, 5, mdSpiCls, rspUserLoginCls, rspUserLoginObj, rspInfoCls, rspInfoObj);
 	mdJvm->DetachCurrentThread();
 }
 
@@ -122,5 +126,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 
 	env->CallVoidMethod(jMdSpi, methodid, rtnDepthMarketDataObj);
 
+
+	Common::releaseLocalRef(env, 3, mdSpiCls, rtnDepthMarketDataCls, rtnDepthMarketDataObj);
 	mdJvm->DetachCurrentThread();
 }

@@ -23,9 +23,7 @@ void TraderSpi::notifyFrontConnected(){
 	jmethodID methodid = env->GetMethodID(cls, "onFrontConnected", "()V");
 	env->CallVoidMethod(jTraderSpi, methodid);
 
-	//cerr << cls << endl;
 	Common::releaseLocalRef(env, 1, cls);
-	//cerr << cls << endl;
 	traderJvm->DetachCurrentThread();
 }
 
@@ -280,7 +278,7 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder){
 	JNIEnv *env; 
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
-	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnOrder", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderField)V");
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnOrder", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderField;)V");
 	
 	if(pOrder == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL);	
@@ -303,7 +301,7 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder){
 	Common::assemInt(env, &orderCls, &orderObj, "volumeTotalOriginal", pOrder->VolumeTotalOriginal);
 	Common::assemChar(env, &orderCls, &orderObj, "timeCondition", pOrder->TimeCondition);
 	Common::assemString(env, &orderCls, &orderObj, "gTDDate", pOrder->GTDDate);
-	Common::assemInt(env, &orderCls, &orderObj, "volumeCondition", pOrder->VolumeCondition);
+	Common::assemChar(env, &orderCls, &orderObj, "volumeCondition", pOrder->VolumeCondition);
 	Common::assemInt(env, &orderCls, &orderObj, "minVolume", pOrder->MinVolume);
 	Common::assemChar(env, &orderCls, &orderObj, "contingentCondition", pOrder->ContingentCondition);
 	Common::assemDouble(env, &orderCls, &orderObj, "stopPrice", pOrder->StopPrice);
@@ -386,7 +384,7 @@ void TraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostF
 	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "volumeTotalOriginal", pInputOrder->VolumeTotalOriginal);
 	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "timeCondition", pInputOrder->TimeCondition);
 	Common::assemString(env, &inputOrderCls, &inputOrderObj, "gTDDate", pInputOrder->GTDDate);
-	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "volumeCondition", pInputOrder->VolumeCondition);
+	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "volumeCondition", pInputOrder->VolumeCondition);
 	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "minVolume", pInputOrder->MinVolume);
 	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "contingentCondition", pInputOrder->ContingentCondition);
 	Common::assemDouble(env, &inputOrderCls, &inputOrderObj, "stopPrice", pInputOrder->StopPrice);
@@ -416,7 +414,7 @@ void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CTho
 	JNIEnv *env; 
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
-	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderInsert", "(Lorg/zhps/hjctp/entity/CThostFtdcInputOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField)V");	
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderInsert", "(Lorg/zhps/hjctp/entity/CThostFtdcInputOrderField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;)V");	
 
 	if(pInputOrder == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL);	
@@ -439,7 +437,7 @@ void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CTho
 	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "volumeTotalOriginal", pInputOrder->VolumeTotalOriginal);
 	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "timeCondition", pInputOrder->TimeCondition);
 	Common::assemString(env, &inputOrderCls, &inputOrderObj, "gTDDate", pInputOrder->GTDDate);
-	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "volumeCondition", pInputOrder->VolumeCondition);
+	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "volumeCondition", pInputOrder->VolumeCondition);
 	Common::assemInt(env, &inputOrderCls, &inputOrderObj, "minVolume", pInputOrder->MinVolume);
 	Common::assemChar(env, &inputOrderCls, &inputOrderObj, "contingentCondition", pInputOrder->ContingentCondition);
 	Common::assemDouble(env, &inputOrderCls, &inputOrderObj, "stopPrice", pInputOrder->StopPrice);
@@ -469,7 +467,7 @@ void TraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade){
 	JNIEnv *env; 
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
-	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnTrade", "(Lorg/zhps/hjctp/entity/CThostFtdcTradeField)V");	
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onRtnTrade", "(Lorg/zhps/hjctp/entity/CThostFtdcTradeField;)V");	
 
 	if(pTrade == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL);	
@@ -561,7 +559,7 @@ void TraderSpi::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CT
 	JNIEnv *env; 
 	traderJvm->AttachCurrentThread((void **)&env, NULL);
 	jclass traderSpiCls = env->GetObjectClass(jTraderSpi);
-	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderAction", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderActionField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField)V");	
+	jmethodID methodid = env->GetMethodID(traderSpiCls, "onErrRtnOrderAction", "(Lorg/zhps/hjctp/entity/CThostFtdcOrderActionField;Lorg/zhps/hjctp/entity/CThostFtdcRspInfoField;)V");	
 
 	if(pOrderAction == 0){
 		env->CallVoidMethod(jTraderSpi, methodid, NULL, NULL);	
@@ -634,34 +632,34 @@ void TraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFie
 	Common::assemString(env, &orderCls, &orderObj, "combOffsetFlag", pOrder->CombOffsetFlag);
 	Common::assemString(env, &orderCls, &orderObj, "combHedgeFlag", pOrder->CombHedgeFlag);
 	Common::assemDouble(env, &orderCls, &orderObj, "limitPrice", pOrder->LimitPrice);
-	Common::assemDouble(env, &orderCls, &orderObj, "volumeTotalOriginal", pOrder->VolumeTotalOriginal);
+	Common::assemInt(env, &orderCls, &orderObj, "volumeTotalOriginal", pOrder->VolumeTotalOriginal);
 	Common::assemChar(env, &orderCls, &orderObj, "timeCondition", pOrder->TimeCondition);
 	Common::assemString(env, &orderCls, &orderObj, "gTDDate", pOrder->GTDDate);
-	Common::assemDouble(env, &orderCls, &orderObj, "volumeCondition", pOrder->VolumeCondition);
-	Common::assemDouble(env, &orderCls, &orderObj, "minVolume", pOrder->MinVolume);
+	Common::assemChar(env, &orderCls, &orderObj, "volumeCondition", pOrder->VolumeCondition);
+	Common::assemInt(env, &orderCls, &orderObj, "minVolume", pOrder->MinVolume);
 	Common::assemChar(env, &orderCls, &orderObj, "contingentCondition", pOrder->ContingentCondition);
 	Common::assemDouble(env, &orderCls, &orderObj, "stopPrice", pOrder->StopPrice);
 	Common::assemChar(env, &orderCls, &orderObj, "forceCloseReason", pOrder->ForceCloseReason);
-	Common::assemDouble(env, &orderCls, &orderObj, "isAutoSuspend", pOrder->IsAutoSuspend);
+	Common::assemInt(env, &orderCls, &orderObj, "isAutoSuspend", pOrder->IsAutoSuspend);
 	Common::assemString(env, &orderCls, &orderObj, "businessUnit", pOrder->BusinessUnit);
-	Common::assemDouble(env, &orderCls, &orderObj, "requestID", pOrder->RequestID);
+	Common::assemInt(env, &orderCls, &orderObj, "requestID", pOrder->RequestID);
 	Common::assemString(env, &orderCls, &orderObj, "orderLocalID", pOrder->OrderLocalID);
 	Common::assemString(env, &orderCls, &orderObj, "exchangeID", pOrder->ExchangeID);
 	Common::assemString(env, &orderCls, &orderObj, "participantID", pOrder->ParticipantID);
 	Common::assemString(env, &orderCls, &orderObj, "clientID", pOrder->ClientID);
 	Common::assemString(env, &orderCls, &orderObj, "exchangeInstID", pOrder->ExchangeInstID);
 	Common::assemString(env, &orderCls, &orderObj, "traderID", pOrder->TraderID);
-	Common::assemDouble(env, &orderCls, &orderObj, "installID", pOrder->InstallID);
+	Common::assemInt(env, &orderCls, &orderObj, "installID", pOrder->InstallID);
 	Common::assemChar(env, &orderCls, &orderObj, "orderSubmitStatus", pOrder->OrderSubmitStatus);
-	Common::assemDouble(env, &orderCls, &orderObj, "notifySequence", pOrder->NotifySequence);
+	Common::assemInt(env, &orderCls, &orderObj, "notifySequence", pOrder->NotifySequence);
 	Common::assemString(env, &orderCls, &orderObj, "tradingDay", pOrder->TradingDay);
-	Common::assemDouble(env, &orderCls, &orderObj, "settlementID", pOrder->SettlementID);
+	Common::assemInt(env, &orderCls, &orderObj, "settlementID", pOrder->SettlementID);
 	Common::assemString(env, &orderCls, &orderObj, "orderSysID", pOrder->OrderSysID);
 	Common::assemChar(env, &orderCls, &orderObj, "orderSource", pOrder->OrderSource);
 	Common::assemChar(env, &orderCls, &orderObj, "orderStatus", pOrder->OrderStatus);
 	Common::assemChar(env, &orderCls, &orderObj, "orderType", pOrder->OrderType);
-	Common::assemDouble(env, &orderCls, &orderObj, "volumeTraded", pOrder->VolumeTraded);
-	Common::assemDouble(env, &orderCls, &orderObj, "volumeTotal", pOrder->VolumeTotal);
+	Common::assemInt(env, &orderCls, &orderObj, "volumeTraded", pOrder->VolumeTraded);
+	Common::assemInt(env, &orderCls, &orderObj, "volumeTotal", pOrder->VolumeTotal);
 	Common::assemString(env, &orderCls, &orderObj, "insertDate", pOrder->InsertDate);
 	Common::assemString(env, &orderCls, &orderObj, "insertTime", pOrder->InsertTime);
 	Common::assemString(env, &orderCls, &orderObj, "activeTime", pOrder->ActiveTime);
@@ -670,17 +668,17 @@ void TraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFie
 	Common::assemString(env, &orderCls, &orderObj, "cancelTime", pOrder->CancelTime);
 	Common::assemString(env, &orderCls, &orderObj, "activeTraderID", pOrder->ActiveTraderID);
 	Common::assemString(env, &orderCls, &orderObj, "clearingPartID", pOrder->ClearingPartID);
-	Common::assemDouble(env, &orderCls, &orderObj, "sequenceNo", pOrder->SequenceNo);
-	Common::assemDouble(env, &orderCls, &orderObj, "frontID", pOrder->FrontID);
-	Common::assemDouble(env, &orderCls, &orderObj, "sessionID", pOrder->SessionID);
+	Common::assemInt(env, &orderCls, &orderObj, "sequenceNo", pOrder->SequenceNo);
+	Common::assemInt(env, &orderCls, &orderObj, "frontID", pOrder->FrontID);
+	Common::assemInt(env, &orderCls, &orderObj, "sessionID", pOrder->SessionID);
 	Common::assemString(env, &orderCls, &orderObj, "userProductInfo", pOrder->UserProductInfo);
 	Common::assemCstring(env, &orderCls, &orderObj, "statusMsg", pOrder->StatusMsg);
-	Common::assemDouble(env, &orderCls, &orderObj, "userForceClose", pOrder->UserForceClose);
+	Common::assemInt(env, &orderCls, &orderObj, "userForceClose", pOrder->UserForceClose);
 	Common::assemString(env, &orderCls, &orderObj, "activeUserID", pOrder->ActiveUserID);
-	Common::assemDouble(env, &orderCls, &orderObj, "brokerOrderSeq", pOrder->BrokerOrderSeq);
+	Common::assemInt(env, &orderCls, &orderObj, "brokerOrderSeq", pOrder->BrokerOrderSeq);
 	Common::assemString(env, &orderCls, &orderObj, "relativeOrderSysID", pOrder->RelativeOrderSysID);
-	Common::assemDouble(env, &orderCls, &orderObj, "zCETotalTradedVolume", pOrder->ZCETotalTradedVolume);
-	Common::assemDouble(env, &orderCls, &orderObj, "isSwapOrder", pOrder->IsSwapOrder);
+	Common::assemInt(env, &orderCls, &orderObj, "zCETotalTradedVolume", pOrder->ZCETotalTradedVolume);
+	Common::assemInt(env, &orderCls, &orderObj, "isSwapOrder", pOrder->IsSwapOrder);
 	Common::assemString(env, &orderCls, &orderObj, "branchID", pOrder->BranchID);
 	Common::assemString(env, &orderCls, &orderObj, "investUnitID", pOrder->InvestUnitID);
 	Common::assemString(env, &orderCls, &orderObj, "accountID", pOrder->AccountID);

@@ -44,13 +44,13 @@ public:
 		env->DeleteLocalRef(str);
 	}
 ////////////////////////////////////////////READ//////////////////////////////////////////////////////////
-	static int readDouble(JNIEnv *env, jobject obj, const char* filedName){
+	static double readDouble(JNIEnv *env, jobject obj, const char* filedName){
 		jclass cls = env->GetObjectClass(obj);	
 		if(cls == NULL){
 			return 0;
 		}
 		jfieldID fieldID = env->GetFieldID(cls, filedName,"D");
-		return env->GetIntField(obj , fieldID);
+		return env->GetDoubleField(obj , fieldID);
 	}
 
 	static int readInt(JNIEnv *env, jobject obj, const char* filedName){
@@ -62,13 +62,13 @@ public:
 		return env->GetIntField(obj , fieldID);
 	}
 
-	static int readChar(JNIEnv *env, jobject obj, const char* filedName){
+	static char readChar(JNIEnv *env, jobject obj, const char* filedName){
 		jclass cls = env->GetObjectClass(obj);	
 		if(cls == NULL){
 			return 0;
 		}
 		jfieldID fieldID = env->GetFieldID(cls, filedName,"C");
-		return env->GetIntField(obj , fieldID);
+		return env->GetCharField(obj , fieldID);
 	}
 
 	static const char* readString(JNIEnv *env, jobject obj, const char* filedName){

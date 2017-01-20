@@ -190,3 +190,63 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_queryOrder
 	/*Common::releaseUTFChar(env, broker_id);
 	Common::releaseUTFChar(env, investor_id);*/
 }
+
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_insertOrder
+	(JNIEnv *env, jclass, jobject iOrder){
+	const char* instrumentID = Common::readString(env, iOrder, "instrumentID");
+	const char* orderRef = Common::readString(env, iOrder, "orderRef");
+	char direction = Common::readChar(env, iOrder, "direction");
+	char combOffsetFlag = Common::readChar(env, iOrder, "combOffsetFlag");
+	char combHedgeFlag = Common::readChar(env, iOrder, "combHedgeFlag");
+	int volumeTotalOriginal = Common::readInt(env, iOrder, "volumeTotalOriginal");
+	char contingentCondition = Common::readChar(env, iOrder, "contingentCondition");
+	char volumeCondition = Common::readChar(env, iOrder, "volumeCondition");
+	char timeCondition = Common::readChar(env, iOrder, "timeCondition");
+	int minVolume = Common::readInt(env, iOrder, "minVolume");
+	char forceCloseReason = Common::readChar(env, iOrder, "forceCloseReason");
+	int isAutoSuspend = Common::readInt(env, iOrder, "isAutoSuspend");
+	int userForceClose = Common::readInt(env, iOrder, "userForceClose");
+	char orderPriceType = Common::readChar(env, iOrder, "orderPriceType");
+	double limitPrice = Common::readDouble(env, iOrder, "limitPrice");
+
+	/*cerr << "instrumentID: " << instrumentID << endl;
+	cerr << "orderRef: " << orderRef << endl;
+	cerr << "direction: " << direction << endl;
+	cerr << "combOffsetFlag: " << combOffsetFlag << endl;
+	cerr << "combHedgeFlag: " << combHedgeFlag << endl;
+	cerr << "volumeTotalOriginal: " << volumeTotalOriginal << endl;
+	cerr << "contingentCondition: " << contingentCondition << endl;
+	cerr << "volumeCondition: " << volumeCondition << endl;
+	cerr << "timeCondition: " << timeCondition << endl;
+	cerr << "minVolume: " << minVolume << endl;
+	cerr << "forceCloseReason: " << forceCloseReason << endl;
+	cerr << "isAutoSuspend: " << isAutoSuspend << endl;
+	cerr << "userForceClose: " << userForceClose << endl;
+	cerr << "orderPriceType: " << orderPriceType << endl;
+	cerr << "limitPrice: " << limitPrice << endl;*/
+
+	CThostFtdcInputOrderField inputOrder;
+	memset(&inputOrder, 0, sizeof(inputOrder));
+	strcpy(inputOrder.BrokerID, BROKER_ID);
+	strcpy(inputOrder.InvestorID, INVESTOR_ID);
+	strcpy(inputOrder.InstrumentID, instrumentID);
+	strcpy(inputOrder.OrderRef, "");
+	inputOrder.Direction = direction;//THOST_FTDC_D_Buy;
+	inputOrder.CombOffsetFlag[0] = combOffsetFlag;//THOST_FTDC_OF_Open;
+	inputOrder.CombHedgeFlag[0] = combHedgeFlag;//THOST_FTDC_HF_Speculation;
+	inputOrder.VolumeTotalOriginal = volumeTotalOriginal;
+	inputOrder.ContingentCondition = contingentCondition;//THOST_FTDC_CC_Immediately;
+	inputOrder.VolumeCondition = volumeCondition;//THOST_FTDC_VC_AV;
+	inputOrder.TimeCondition = timeCondition;//THOST_FTDC_TC_GFD;
+	inputOrder.MinVolume = minVolume;
+	inputOrder.ForceCloseReason = forceCloseReason;//THOST_FTDC_FCC_NotForceClose;
+	inputOrder.IsAutoSuspend = isAutoSuspend;
+	inputOrder.UserForceClose = userForceClose;
+	inputOrder.OrderPriceType = orderPriceType;//THOST_FTDC_OPT_LimitPrice;
+	inputOrder.LimitPrice = limitPrice;
+	pTraderApi->ReqOrderInsert(&inputOrder, ++iTdRequestID);
+
+	Common::releaseUTFChar(env, instrumentID);
+	Common::releaseUTFChar(env, orderRef);
+}
+
