@@ -250,3 +250,24 @@ JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_insertOrder
 	Common::releaseUTFChar(env, orderRef);
 }
 
+JNIEXPORT void JNICALL Java_org_zhps_hjctp_jni_NativeLoader_killOrder
+	(JNIEnv *env, jclass, jobject kOrder){
+	const char* instrumentID = Common::readString(env, kOrder, "instrumentID");
+	const char* exchangeID = Common::readString(env, kOrder, "exchangeID");
+	const char* orderSysID = Common::readString(env, kOrder, "orderSysID");
+	char actionFlag = Common::readChar(env, kOrder, "actionFlag");
+	
+	CThostFtdcInputOrderActionField actionOrder;
+	memset(&actionOrder, 0, sizeof(actionOrder));
+	strcpy(actionOrder.BrokerID, BROKER_ID);
+	strcpy(actionOrder.InvestorID, INVESTOR_ID);
+	strcpy(actionOrder.InstrumentID, instrumentID);
+	strcpy(actionOrder.ExchangeID, exchangeID);
+	strcpy(actionOrder.OrderSysID, orderSysID);
+	actionOrder.ActionFlag = actionFlag;
+	pTraderApi->ReqOrderAction(&actionOrder, ++iTdRequestID);
+
+	Common::releaseUTFChar(env, instrumentID);
+	Common::releaseUTFChar(env, exchangeID);
+	Common::releaseUTFChar(env, orderSysID);
+}
