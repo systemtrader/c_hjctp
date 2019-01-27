@@ -115,7 +115,7 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "lowestPrice", pDepthMarketData->LowestPrice);
 	Common::assemInt(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "volume", pDepthMarketData->Volume);
 	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "turnover", pDepthMarketData->Turnover);
-	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openInterest", pDepthMarketData->OpenInterest);
+	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "openInterest", pDepthMarketData->LastPrice);
 	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "closePrice", pDepthMarketData->ClosePrice);
 	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "settlementPrice", pDepthMarketData->SettlementPrice);
 	Common::assemDouble(env, &rtnDepthMarketDataCls, &rtnDepthMarketDataObj, "upperLimitPrice", pDepthMarketData->UpperLimitPrice);
@@ -129,4 +129,6 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 
 	Common::releaseLocalRef(env, 3, mdSpiCls, rtnDepthMarketDataCls, rtnDepthMarketDataObj);
 	mdJvm->DetachCurrentThread();
+
+	cerr << "--->>> send market data: " << endl;
 }
