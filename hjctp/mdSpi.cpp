@@ -130,5 +130,5 @@ void MdSpi::notifyRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarke
 	Common::releaseLocalRef(env, 3, mdSpiCls, rtnDepthMarketDataCls, rtnDepthMarketDataObj);
 	mdJvm->DetachCurrentThread();
 
-	cerr << "--->>> send market data: " << endl;
+	//cerr << "--->>> send market data: " << endl;
 }
